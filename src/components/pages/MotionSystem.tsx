@@ -81,7 +81,7 @@ export default function MotionSystem() {
                   style={{
                     backgroundColor: brand.theme.primary,
                     transitionProperty: 'width',
-                    transitionDuration: a.duration,
+                    transitionDuration: /^\d/.test(a.duration) ? a.duration : '300ms',
                     transitionTimingFunction: a.easing || 'ease-out',
                   }}
                 />

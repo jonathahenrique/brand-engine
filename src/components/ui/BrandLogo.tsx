@@ -25,9 +25,9 @@ export function BrandLogo({ slug, name, logoFile, variant, theme, className }: B
           <Image
             src={iconFile || logoFile}
             alt={name}
-            width={24}
-            height={24}
-            className="h-6 w-6 object-contain"
+            width={96}
+            height={96}
+            className="h-[60%] w-[60%] object-contain"
             style={{ filter: 'brightness(0) invert(1)' }}
           />
         ) : (
