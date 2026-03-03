@@ -4,16 +4,51 @@
 :root {
   --bg-page: #F8F9FC;
   --bg-card: #FFFFFF;
+  --bg-muted: #F3F4F6;
+  --bg-subtle: #F9FAFB;
+  --bg-inverse: #111827;
   --border-card: #E5E7EB;
+  --border-default: #E5E7EB;
+  --border-faint: #F3F4F6;
   --border-subtle: #F0F0F0;
   --text-primary: #111827;
   --text-secondary: #6B7280;
   --text-tertiary: #9CA3AF;
+  --text-muted: #374151;
+  --text-ghost: #9CA3AF;
+  --text-placeholder: #D1D5DB;
+  --text-on-inverse: #FFFFFF;
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
   --radius-card: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;
+  --scrollbar-thumb: #D1D5DB;
+  --scrollbar-hover: #9CA3AF;
+}
+
+/* ── Dark Theme ── */
+[data-theme="dark"] {
+  --bg-page: #0F1117;
+  --bg-card: #1C1E26;
+  --bg-muted: #252830;
+  --bg-subtle: #1C1E26;
+  --bg-inverse: #F9FAFB;
+  --border-card: #2D303A;
+  --border-default: #2D303A;
+  --border-faint: #252830;
+  --border-subtle: #252830;
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+  --text-muted: #D1D5DB;
+  --text-ghost: #6B7280;
+  --text-placeholder: #4B5563;
+  --text-on-inverse: #111827;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --scrollbar-thumb: #4B5563;
+  --scrollbar-hover: #6B7280;
 }
 
 html {
@@ -128,12 +163,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9CA3AF;
+  background: var(--scrollbar-hover);
 }
 
 /* ── Utility ── */

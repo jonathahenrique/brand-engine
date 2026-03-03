@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useBrand } from '@/context/BrandContext'
 import { BrandLogo } from '@/components/ui/BrandLogo'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import {
   LayoutDashboard,
   Palette,
@@ -50,14 +51,14 @@ export default function Sidebar() {
             className="h-10 w-10"
           />
           <div>
-            <p className="text-sm font-semibold text-gray-900">{brand.name}</p>
-            <p className="text-[11px] text-gray-400">Brand System</p>
+            <p className="text-sm font-semibold text-[var(--text-primary)]">{brand.name}</p>
+            <p className="text-[11px] text-[var(--text-ghost)]">Brand System</p>
           </div>
         </div>
       </div>
 
       {/* Separator */}
-      <div className="mx-4 border-t border-gray-200" />
+      <div className="mx-4 border-t border-[var(--border-default)]" />
 
       {/* Nav */}
       <nav className="flex-1 px-3 pt-5" aria-label="Páginas da marca">
@@ -78,8 +79,8 @@ export default function Sidebar() {
                   aria-current={isActive ? 'page' : undefined}
                   className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors ${
                     isActive
-                      ? 'text-gray-900'
-                      : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                      ? ''
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-muted)]'
                   }`}
                   style={
                     isActive
@@ -95,7 +96,7 @@ export default function Sidebar() {
                   )}
                   <item.icon
                     size={16}
-                    className={isActive ? '' : 'text-gray-400 group-hover:text-gray-500'}
+                    className={isActive ? '' : 'text-[var(--text-ghost)] group-hover:text-[var(--text-secondary)]'}
                     style={isActive ? { color: brand.theme.primary } : undefined}
                   />
                   {item.label}
@@ -107,14 +108,15 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-gray-100 px-4 py-4">
+      <div className="flex items-center justify-between border-t border-[var(--border-faint)] px-4 py-4">
         <Link
           href="/"
-          className="flex items-center gap-2 text-[13px] text-gray-400 transition-colors hover:text-gray-600"
+          className="flex items-center gap-2 text-[13px] text-[var(--text-ghost)] transition-colors hover:text-[var(--text-secondary)]"
         >
           <ChevronLeft size={14} />
           Todas as marcas
         </Link>
+        <ThemeToggle />
       </div>
     </>
   )
@@ -124,10 +126,10 @@ export default function Sidebar() {
       {/* Mobile hamburger */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed left-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-md lg:hidden"
+        className="fixed left-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--bg-card)] shadow-md lg:hidden"
         aria-label="Abrir menu"
       >
-        <Menu size={20} className="text-gray-700" />
+        <Menu size={20} className="text-[var(--text-muted)]" />
       </button>
 
       {/* Mobile overlay */}
@@ -141,14 +143,14 @@ export default function Sidebar() {
 
       {/* Mobile drawer */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] flex-col bg-white shadow-xl transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] flex-col bg-[var(--bg-card)] shadow-xl transition-transform duration-300 lg:hidden ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
         aria-label="Menu lateral"
       >
         <button
           onClick={() => setOpen(false)}
-          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg text-[var(--text-ghost)] hover:bg-[var(--bg-muted)] hover:text-[var(--text-secondary)]"
           aria-label="Fechar menu"
         >
           <X size={18} />
@@ -158,7 +160,7 @@ export default function Sidebar() {
 
       {/* Desktop sidebar */}
       <aside
-        className="sticky top-0 hidden h-screen w-[260px] shrink-0 flex-col overflow-y-auto border-r border-[#E5E7EB] bg-white lg:flex"
+        className="sticky top-0 hidden h-screen w-[260px] shrink-0 flex-col overflow-y-auto border-r border-[var(--border-card)] bg-[var(--bg-card)] lg:flex"
         aria-label="Menu lateral"
       >
         {sidebarContent}

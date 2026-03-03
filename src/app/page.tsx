@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getAllBrands } from '@/data/brands'
 import { BrandLogo } from '@/components/ui/BrandLogo'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export default function HomePage() {
   const brands = getAllBrands()
@@ -12,18 +13,21 @@ export default function HomePage() {
   const avgCompleteness = Math.round(brands.reduce((a, b) => a + b.completeness, 0) / brands.length)
 
   return (
-    <div className="min-h-screen bg-[#F8F9FC]">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-[1600px] px-8 py-10">
         {/* Header */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900">
-              <span className="text-sm font-bold text-white">BE</span>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--bg-inverse)]">
+                <span className="text-sm font-bold text-[var(--text-on-inverse)]">BE</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-[var(--text-primary)]">Brand Engine</h1>
+                <p className="text-xs text-[var(--text-ghost)]">Design System Manager</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Brand Engine</h1>
-              <p className="text-xs text-gray-400">Design System Manager</p>
-            </div>
+            <ThemeToggle />
           </div>
         </div>
 
@@ -31,15 +35,15 @@ export default function HomePage() {
         <div className="mb-10 grid grid-cols-3 gap-4">
           <div className="card p-5">
             <p className="section-label mb-1">Total Marcas</p>
-            <p className="text-3xl font-bold text-gray-900">{brands.length}</p>
+            <p className="text-3xl font-bold text-[var(--text-primary)]">{brands.length}</p>
           </div>
           <div className="card p-5">
             <p className="section-label mb-1">Tokens Definidos</p>
-            <p className="text-3xl font-bold text-gray-900">{totalTokens}</p>
+            <p className="text-3xl font-bold text-[var(--text-primary)]">{totalTokens}</p>
           </div>
           <div className="card p-5">
             <p className="section-label mb-1">Completude Média</p>
-            <p className="text-3xl font-bold text-gray-900">{avgCompleteness}%</p>
+            <p className="text-3xl font-bold text-[var(--text-primary)]">{avgCompleteness}%</p>
           </div>
         </div>
 
@@ -67,15 +71,15 @@ export default function HomePage() {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="text-base font-semibold text-gray-900">{brand.name}</h3>
-                  <p className="mt-0.5 text-xs text-gray-500 line-clamp-1">{brand.tagline}</p>
+                  <h3 className="text-base font-semibold text-[var(--text-primary)]">{brand.name}</h3>
+                  <p className="mt-0.5 text-xs text-[var(--text-secondary)] line-clamp-1">{brand.tagline}</p>
 
                   {/* Badges */}
                   <div className="mt-3 flex gap-2">
-                    <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+                    <span className="rounded-md bg-[var(--bg-muted)] px-2 py-0.5 text-[10px] font-medium text-[var(--text-secondary)]">
                       {brand.niche}
                     </span>
-                    <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+                    <span className="rounded-md bg-[var(--bg-muted)] px-2 py-0.5 text-[10px] font-medium text-[var(--text-secondary)]">
                       {brand.personality.archetype}
                     </span>
                   </div>
@@ -89,7 +93,7 @@ export default function HomePage() {
 
                   {/* Progress */}
                   <div className="mt-3 flex items-center gap-2">
-                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
+                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-muted)]">
                       <div
                         className="h-full rounded-full"
                         style={{
@@ -98,7 +102,7 @@ export default function HomePage() {
                         }}
                       />
                     </div>
-                    <span className="text-[10px] font-medium text-gray-400">{brand.completeness}%</span>
+                    <span className="text-[10px] font-medium text-[var(--text-ghost)]">{brand.completeness}%</span>
                   </div>
                 </div>
               </div>

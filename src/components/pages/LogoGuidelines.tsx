@@ -31,8 +31,8 @@ export default function LogoGuidelines() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Logo</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Logo</h1>
+        <p className="mt-1 text-sm text-[var(--text-secondary)]">
           Conceito, variantes e regras de uso do logotipo.
         </p>
       </div>
@@ -43,11 +43,11 @@ export default function LogoGuidelines() {
         style={{ borderLeftColor: brand.theme.primary }}
       >
         <p className="section-label mb-2">Conceito</p>
-        <p className="text-lg font-semibold text-gray-900">{logo.concept}</p>
-        <p className="mt-2 text-sm leading-relaxed text-gray-600">{logo.description}</p>
+        <p className="text-lg font-semibold text-[var(--text-primary)]">{logo.concept}</p>
+        <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">{logo.description}</p>
       </div>
 
-      {/* Logo Display — Main (Full Color) */}
+      {/* Logo Display — Main (Full Color) — backgrounds are brand demos, NOT shell */}
       <div>
         <p className="section-label mb-4">Logo Principal</p>
         <div className="bento bento-2">
@@ -96,7 +96,7 @@ export default function LogoGuidelines() {
             )}
           </div>
         </div>
-        <p className="mt-2 text-[11px] text-gray-400">
+        <p className="mt-2 text-[11px] text-[var(--text-ghost)]">
           Logo full color somente sobre fundo preto ou branco puro. Para outros fundos, usar versao monocromatica.
         </p>
       </div>
@@ -126,10 +126,10 @@ export default function LogoGuidelines() {
                 className="h-auto w-[240px]"
                 style={{ filter: 'brightness(0)' }}
               />
-              <p className="absolute bottom-3 text-[10px] text-gray-400">Preto sobre fundo claro</p>
+              <p className="absolute bottom-3 text-[10px] text-[var(--text-ghost)]">Preto sobre fundo claro</p>
             </div>
           </div>
-          <p className="mt-2 text-[11px] text-gray-400">
+          <p className="mt-2 text-[11px] text-[var(--text-ghost)]">
             Versões monocromáticas para uso em fundos que não sejam preto ou branco puro.
           </p>
         </div>
@@ -169,7 +169,7 @@ export default function LogoGuidelines() {
               />
             </div>
           </div>
-          <p className="mt-2 text-[11px] text-gray-400">
+          <p className="mt-2 text-[11px] text-[var(--text-ghost)]">
             Manter distância mínima de &quot;x&quot; (metade da altura do ícone) ao redor do logo. Nenhum elemento deve invadir essa zona.
           </p>
         </div>
@@ -192,8 +192,8 @@ export default function LogoGuidelines() {
                   style={{ filter: 'brightness(0)' }}
                 />
                 <div className="text-center">
-                  <p className="text-[11px] font-semibold text-gray-700">70px</p>
-                  <p className="text-[10px] text-gray-400">Digital mínimo</p>
+                  <p className="text-[11px] font-semibold text-[var(--text-muted)]">70px</p>
+                  <p className="text-[10px] text-[var(--text-ghost)]">Digital mínimo</p>
                 </div>
               </div>
               {/* Icon only minimum */}
@@ -207,8 +207,8 @@ export default function LogoGuidelines() {
                   style={{ filter: 'brightness(0)' }}
                 />
                 <div className="text-center">
-                  <p className="text-[11px] font-semibold text-gray-700">21px</p>
-                  <p className="text-[10px] text-gray-400">Ícone mínimo</p>
+                  <p className="text-[11px] font-semibold text-[var(--text-muted)]">21px</p>
+                  <p className="text-[10px] text-[var(--text-ghost)]">Ícone mínimo</p>
                 </div>
               </div>
               {/* Print minimum */}
@@ -222,8 +222,8 @@ export default function LogoGuidelines() {
                   style={{ filter: 'brightness(0)' }}
                 />
                 <div className="text-center">
-                  <p className="text-[11px] font-semibold text-gray-700">20mm</p>
-                  <p className="text-[10px] text-gray-400">Impresso mínimo</p>
+                  <p className="text-[11px] font-semibold text-[var(--text-muted)]">20mm</p>
+                  <p className="text-[10px] text-[var(--text-ghost)]">Impresso mínimo</p>
                 </div>
               </div>
             </div>
@@ -258,8 +258,8 @@ export default function LogoGuidelines() {
                   </div>
                 )}
                 <div className="p-4">
-                  <p className="text-sm font-semibold text-gray-900">{v.name}</p>
-                  <p className="mt-1 text-xs text-gray-500">{v.description}</p>
+                  <p className="text-sm font-semibold text-[var(--text-primary)]">{v.name}</p>
+                  <p className="mt-1 text-xs text-[var(--text-secondary)]">{v.description}</p>
                 </div>
               </div>
             )
@@ -273,7 +273,7 @@ export default function LogoGuidelines() {
           <p className="mb-3 text-sm font-semibold text-emerald-600">Regras de Uso</p>
           <ul className="space-y-2">
             {logo.rules.map((r) => (
-              <li key={r} className="flex items-start gap-2 text-xs text-gray-600">
+              <li key={r} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
                 <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
                 {r}
               </li>
@@ -284,7 +284,7 @@ export default function LogoGuidelines() {
           <p className="mb-3 text-sm font-semibold text-red-500">Uso Incorreto</p>
           <ul className="space-y-2">
             {logo.misuse.map((m) => (
-              <li key={m} className="flex items-start gap-2 text-xs text-gray-600">
+              <li key={m} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
                 <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-400" />
                 {m}
               </li>

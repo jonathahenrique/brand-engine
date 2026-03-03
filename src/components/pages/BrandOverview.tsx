@@ -39,7 +39,7 @@ function KpiCard({
     <div className="card p-5">
       <p className="section-label mb-1">{label}</p>
       <div className="flex items-end justify-between">
-        <p className="text-3xl font-bold text-gray-900">{value}</p>
+        <p className="text-3xl font-bold text-[var(--text-primary)]">{value}</p>
         <Sparkline values={sparkValues} color={color} />
       </div>
       {trend && (
@@ -55,7 +55,7 @@ function CircularProgress({ value, color }: { value: number; color: string }) {
   const offset = circumference - (value / 100) * circumference
   return (
     <svg width="100" height="100" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r={r} fill="none" stroke="#F0F0F0" strokeWidth="8" />
+      <circle cx="50" cy="50" r={r} fill="none" stroke="var(--border-subtle)" strokeWidth="8" />
       <circle
         cx="50"
         cy="50"
@@ -128,7 +128,7 @@ export default function BrandOverview() {
         {/* Completude */}
         <div className="card flex flex-col items-center justify-center p-5">
           <CircularProgress value={brand.completeness} color={brand.theme.primary} />
-          <p className="mt-3 text-3xl font-bold text-gray-900">{brand.completeness}%</p>
+          <p className="mt-3 text-3xl font-bold text-[var(--text-primary)]">{brand.completeness}%</p>
           <p className="section-label mt-1">Completude</p>
         </div>
       </div>
@@ -175,16 +175,16 @@ export default function BrandOverview() {
                 className="h-20 w-full rounded-xl"
                 style={{ backgroundColor: brand.theme.primary }}
               />
-              <p className="mt-2 text-xs font-medium text-gray-900">Primary</p>
-              <p className="font-mono text-[11px] text-gray-400">{brand.theme.primary}</p>
+              <p className="mt-2 text-xs font-medium text-[var(--text-primary)]">Primary</p>
+              <p className="font-mono text-[11px] text-[var(--text-ghost)]">{brand.theme.primary}</p>
             </div>
             <div className="flex-1">
               <div
                 className="h-20 w-full rounded-xl"
                 style={{ backgroundColor: brand.theme.secondary }}
               />
-              <p className="mt-2 text-xs font-medium text-gray-900">Secondary</p>
-              <p className="font-mono text-[11px] text-gray-400">{brand.theme.secondary}</p>
+              <p className="mt-2 text-xs font-medium text-[var(--text-primary)]">Secondary</p>
+              <p className="font-mono text-[11px] text-[var(--text-ghost)]">{brand.theme.secondary}</p>
             </div>
           </div>
           <div className="flex h-3 overflow-hidden rounded-full">
@@ -199,18 +199,18 @@ export default function BrandOverview() {
           <p className="section-label mb-4">Tipografia</p>
           <div className="flex items-end gap-6">
             <p
-              className="text-7xl font-bold leading-none text-gray-900"
+              className="text-7xl font-bold leading-none text-[var(--text-primary)]"
               style={{ fontFamily: brand.typography.stack.find(f => f.role === 'display')?.font }}
             >
               Aa
             </p>
             <div className="pb-2">
-              <p className="text-sm font-semibold text-gray-900">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">
                 {brand.typography.stack.find(f => f.role === 'display')?.font}
               </p>
-              <p className="text-xs text-gray-400">Heading</p>
+              <p className="text-xs text-[var(--text-ghost)]">Heading</p>
               <p
-                className="mt-2 text-sm text-gray-600"
+                className="mt-2 text-sm text-[var(--text-secondary)]"
                 style={{ fontFamily: brand.typography.stack.find(f => f.role === 'body')?.font }}
               >
                 {brand.typography.stack.find(f => f.role === 'body')?.font} — Body
@@ -236,8 +236,8 @@ export default function BrandOverview() {
           </span>
           <ul className="mt-3 space-y-1.5">
             {brand.personality.traits.slice(0, 3).map((t) => (
-              <li key={t.trait} className="text-xs text-gray-600">
-                <span className="font-medium text-gray-900">{t.trait}</span> — {t.desc}
+              <li key={t.trait} className="text-xs text-[var(--text-secondary)]">
+                <span className="font-medium text-[var(--text-primary)]">{t.trait}</span> — {t.desc}
               </li>
             ))}
           </ul>
@@ -255,7 +255,7 @@ export default function BrandOverview() {
                 >
                   {i + 1}
                 </span>
-                <span className="text-xs text-gray-700">{v.title}</span>
+                <span className="text-xs text-[var(--text-muted)]">{v.title}</span>
               </li>
             ))}
           </ol>
@@ -264,13 +264,13 @@ export default function BrandOverview() {
         {/* Motion Preview */}
         <div className="span-2 card p-5">
           <p className="section-label mb-3">Motion</p>
-          <p className="text-sm font-semibold text-gray-900">{brand.motion.principle}</p>
-          <p className="mt-1 text-xs text-gray-500 leading-relaxed">{brand.motion.description.slice(0, 120)}...</p>
+          <p className="text-sm font-semibold text-[var(--text-primary)]">{brand.motion.principle}</p>
+          <p className="mt-1 text-xs text-[var(--text-secondary)] leading-relaxed">{brand.motion.description.slice(0, 120)}...</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {brand.motion.tokens.slice(0, 4).map((t) => (
               <span
                 key={t.name}
-                className="rounded-full bg-gray-100 px-2.5 py-1 font-mono text-[10px] text-gray-600"
+                className="rounded-full bg-[var(--bg-muted)] px-2.5 py-1 font-mono text-[10px] text-[var(--text-secondary)]"
               >
                 {t.value}
               </span>

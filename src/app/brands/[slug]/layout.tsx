@@ -20,7 +20,7 @@ export default async function BrandLayout({
 
   return (
     <BrandProvider brand={brand}>
-      <div className="flex min-h-screen bg-[#F8F9FC]">
+      <div className="flex min-h-screen bg-[var(--bg-page)]">
         <Sidebar />
         <main className="min-w-0 flex-1 overflow-y-auto px-4 pt-16 pb-8 lg:px-8 lg:pt-8">
           <div className="mx-auto max-w-[1600px]">

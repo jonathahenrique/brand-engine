@@ -9,8 +9,8 @@ export default function MotionSystem() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Motion</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Motion</h1>
+        <p className="mt-1 text-sm text-[var(--text-secondary)]">
           Princípios de animação, tokens e micro-interactions.
         </p>
       </div>
@@ -21,8 +21,8 @@ export default function MotionSystem() {
         style={{ borderLeftColor: brand.theme.primary }}
       >
         <p className="section-label mb-2">Princípio</p>
-        <p className="text-xl font-bold text-gray-900">{motion.principle}</p>
-        <p className="mt-2 text-sm leading-relaxed text-gray-600">{motion.description}</p>
+        <p className="text-xl font-bold text-[var(--text-primary)]">{motion.principle}</p>
+        <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">{motion.description}</p>
         <span
           className="mt-3 inline-block rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider"
           style={{
@@ -41,7 +41,7 @@ export default function MotionSystem() {
           {motion.tokens.map((t) => (
             <div key={t.name} className="card p-5">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-gray-700">{t.name}</span>
+                <span className="font-mono text-xs text-[var(--text-muted)]">{t.name}</span>
                 <span
                   className="rounded-md px-2 py-0.5 font-mono text-[10px] font-semibold"
                   style={{
@@ -52,7 +52,7 @@ export default function MotionSystem() {
                   {t.value}
                 </span>
               </div>
-              <p className="mt-2 text-[11px] text-gray-400">{t.usage}</p>
+              <p className="mt-2 text-[11px] text-[var(--text-ghost)]">{t.usage}</p>
             </div>
           ))}
         </div>
@@ -66,16 +66,16 @@ export default function MotionSystem() {
             <div key={a.element} className="card group p-5">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">{a.element}</p>
-                  <p className="mt-1 text-xs text-gray-500">{a.behavior}</p>
+                  <p className="text-sm font-semibold text-[var(--text-primary)]">{a.element}</p>
+                  <p className="mt-1 text-xs text-[var(--text-secondary)]">{a.behavior}</p>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono text-[11px] text-gray-400">{a.duration}</span>
-                  <p className="font-mono text-[10px] text-gray-300">{a.easing}</p>
+                  <span className="font-mono text-[11px] text-[var(--text-ghost)]">{a.duration}</span>
+                  <p className="font-mono text-[10px] text-[var(--text-placeholder)]">{a.easing}</p>
                 </div>
               </div>
               {/* Interactive demo bar */}
-              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-gray-100">
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--bg-muted)]">
                 <div
                   className="h-full w-0 rounded-full group-hover:w-full"
                   style={{
@@ -97,7 +97,7 @@ export default function MotionSystem() {
         <div className="card p-6">
           <ul className="space-y-2">
             {motion.rules.map((r) => (
-              <li key={r} className="flex items-start gap-2 text-sm text-gray-600">
+              <li key={r} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
                 <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: brand.theme.primary }} />
                 {r}
               </li>

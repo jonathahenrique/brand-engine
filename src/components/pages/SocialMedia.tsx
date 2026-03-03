@@ -150,11 +150,11 @@ export default function SocialMedia() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Social Media</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Social Media</h1>
+        <p className="mt-1 text-sm text-[var(--text-secondary)]">
           Templates de conteúdo com a identidade visual da marca aplicada.
         </p>
-        <span className="mt-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+        <span className="mt-2 inline-block rounded-full bg-[var(--bg-muted)] px-3 py-1 text-xs font-medium text-[var(--text-secondary)]">
           {posts.length + 3} templates
         </span>
       </div>
@@ -201,7 +201,7 @@ export default function SocialMedia() {
               >
                 {n}
               </span>
-              <span className="mt-1 text-xs text-gray-400">{n}/3</span>
+              <span className="mt-1 text-xs text-[var(--text-ghost)]">{n}/3</span>
             </div>
           ))}
         </div>

@@ -17,7 +17,7 @@ function CopyHex({ hex }: { hex: string }) {
     }
   }
   return (
-    <button onClick={copy} className="inline-flex items-center gap-1 text-gray-400 transition hover:text-gray-600">
+    <button onClick={copy} className="inline-flex items-center gap-1 text-[var(--text-ghost)] transition hover:text-[var(--text-secondary)]">
       {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
       <span className="font-mono text-[11px]">{hex}</span>
     </button>
@@ -47,8 +47,8 @@ export default function ColorExplorer() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Cores</h1>
-        <p className="mt-1 text-sm text-gray-500">{brand.colors.philosophy}</p>
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Cores</h1>
+        <p className="mt-1 text-sm text-[var(--text-secondary)]">{brand.colors.philosophy}</p>
       </div>
 
       {/* Tricolor Banner */}
@@ -74,13 +74,13 @@ export default function ColorExplorer() {
             </p>
           </div>
           <div className="p-5">
-            <p className="text-sm font-semibold text-gray-900">
+            <p className="text-sm font-semibold text-[var(--text-primary)]">
               {brand.colors.dark.find(c => c.hex === brand.theme.primary)?.name || 'Primary'}
             </p>
             <div className="mt-2 flex items-center gap-3">
               <CopyHex hex={brand.theme.primary} />
               {brand.colors.dark.find(c => c.hex === brand.theme.primary)?.oklch && (
-                <span className="font-mono text-[11px] text-gray-300">
+                <span className="font-mono text-[11px] text-[var(--text-placeholder)]">
                   {brand.colors.dark.find(c => c.hex === brand.theme.primary)?.oklch}
                 </span>
               )}
@@ -108,7 +108,7 @@ export default function ColorExplorer() {
             </p>
           </div>
           <div className="p-5">
-            <p className="text-sm font-semibold text-gray-900">
+            <p className="text-sm font-semibold text-[var(--text-primary)]">
               {brand.colors.dark.find(c => c.hex === brand.theme.secondary)?.name || 'Secondary'}
             </p>
             <div className="mt-2 flex items-center gap-3">
@@ -131,8 +131,8 @@ export default function ColorExplorer() {
             onClick={() => setMode('dark')}
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               mode === 'dark'
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                ? 'bg-[var(--bg-inverse)] text-[var(--text-on-inverse)]'
+                : 'bg-[var(--bg-muted)] text-[var(--text-secondary)] hover:bg-[var(--border-default)]'
             }`}
           >
             Dark Mode ({brand.colors.dark.length})
@@ -141,8 +141,8 @@ export default function ColorExplorer() {
             onClick={() => setMode('light')}
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               mode === 'light'
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                ? 'bg-[var(--bg-inverse)] text-[var(--text-on-inverse)]'
+                : 'bg-[var(--bg-muted)] text-[var(--text-secondary)] hover:bg-[var(--border-default)]'
             }`}
           >
             Light Mode ({brand.colors.light.length})
@@ -155,10 +155,10 @@ export default function ColorExplorer() {
             <div key={c.token} className="card overflow-hidden">
               <div className="h-24" style={{ backgroundColor: c.hex }} />
               <div className="p-4">
-                <p className="text-xs font-semibold text-gray-900">{c.name}</p>
-                <p className="mt-0.5 font-mono text-[10px] text-gray-400">--color-{c.token}</p>
+                <p className="text-xs font-semibold text-[var(--text-primary)]">{c.name}</p>
+                <p className="mt-0.5 font-mono text-[10px] text-[var(--text-ghost)]">--color-{c.token}</p>
                 <CopyHex hex={c.hex} />
-                <p className="mt-1.5 text-[11px] text-gray-400 leading-snug">{c.usage}</p>
+                <p className="mt-1.5 text-[11px] text-[var(--text-ghost)] leading-snug">{c.usage}</p>
               </div>
             </div>
           ))}
@@ -181,11 +181,11 @@ export default function ColorExplorer() {
             </span>
           </div>
           <div className="flex flex-col justify-center space-y-2">
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-[var(--text-muted)]">
               <span className="font-semibold">Primary sobre BG:</span>
             </p>
             <ContrastBadge fg={brand.theme.primary} bg={brand.theme.bg} />
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-[var(--text-muted)]">
               <span className="font-semibold">Text sobre BG:</span>
             </p>
             <ContrastBadge fg={brand.theme.text} bg={brand.theme.bg} />
@@ -199,7 +199,7 @@ export default function ColorExplorer() {
           <p className="mb-3 text-sm font-semibold text-emerald-600">Primary — Do</p>
           <ul className="space-y-2">
             {brand.colors.primaryUsage.do.map((r) => (
-              <li key={r} className="flex items-start gap-2 text-xs text-gray-600">
+              <li key={r} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
                 <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
                 {r}
               </li>
@@ -210,7 +210,7 @@ export default function ColorExplorer() {
           <p className="mb-3 text-sm font-semibold text-red-500">Primary — Don&apos;t</p>
           <ul className="space-y-2">
             {brand.colors.primaryUsage.dont.map((r) => (
-              <li key={r} className="flex items-start gap-2 text-xs text-gray-600">
+              <li key={r} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
                 <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-400" />
                 {r}
               </li>

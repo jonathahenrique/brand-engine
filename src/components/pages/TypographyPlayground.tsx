@@ -15,8 +15,8 @@ export default function TypographyPlayground() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Tipografia</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Tipografia</h1>
+        <p className="mt-1 text-sm text-[var(--text-secondary)]">
           Font stack, type scale e regras tipográficas da marca.
         </p>
       </div>
@@ -26,17 +26,17 @@ export default function TypographyPlayground() {
         <p className="section-label">Font Stack</p>
 
         {[headingFont, bodyFont, monoFont].filter(Boolean).map((font) => (
-          <div key={font!.font} className="card overflow-hidden">
-            <div className="bg-gray-50 p-8">
+          <div key={`${font!.role}-${font!.font}`} className="card overflow-hidden">
+            <div className="bg-[var(--bg-subtle)] p-8">
               <p
-                className="text-[80px] font-bold leading-none text-gray-900"
+                className="text-[80px] font-bold leading-none text-[var(--text-primary)]"
                 style={{ fontFamily: font!.font }}
               >
                 Aa
               </p>
             </div>
             <div className="flex items-center gap-4 px-6 py-4">
-              <p className="text-sm font-semibold text-gray-900">{font!.font}</p>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">{font!.font}</p>
               <span
                 className="rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
                 style={{
@@ -46,7 +46,7 @@ export default function TypographyPlayground() {
               >
                 {font!.role}
               </span>
-              <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+              <span className="rounded-md bg-[var(--bg-muted)] px-2 py-0.5 text-[10px] font-medium text-[var(--text-secondary)]">
                 {font!.weights}
               </span>
               {font!.variable && (
@@ -54,7 +54,7 @@ export default function TypographyPlayground() {
                   Variable
                 </span>
               )}
-              <span className="text-[11px] text-gray-400">{font!.source}</span>
+              <span className="text-[11px] text-[var(--text-ghost)]">{font!.source}</span>
             </div>
           </div>
         ))}
@@ -63,17 +63,17 @@ export default function TypographyPlayground() {
       {/* Type Scale */}
       <div>
         <p className="section-label mb-4">Type Scale</p>
-        <div className="card divide-y divide-gray-100">
-          <div className="flex items-center gap-6 px-6 py-3 border-b border-gray-100">
+        <div className="card divide-y divide-[var(--border-faint)]">
+          <div className="flex items-center gap-6 px-6 py-3 border-b border-[var(--border-faint)]">
             <div className="w-[340px] shrink-0">
-              <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400">Preview</span>
+              <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--text-ghost)]">Preview</span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="w-12 text-[11px] font-medium uppercase tracking-wider text-gray-400">Nome</span>
-              <span className="w-14 text-[11px] font-medium uppercase tracking-wider text-gray-400">Desktop</span>
-              <span className="w-14 text-[11px] font-medium uppercase tracking-wider text-gray-400">Mobile</span>
-              <span className="w-10 text-[11px] font-medium uppercase tracking-wider text-gray-400">LH</span>
-              <span className="w-10 text-[11px] font-medium uppercase tracking-wider text-gray-400">Weight</span>
+              <span className="w-12 text-[11px] font-medium uppercase tracking-wider text-[var(--text-ghost)]">Nome</span>
+              <span className="w-14 text-[11px] font-medium uppercase tracking-wider text-[var(--text-ghost)]">Desktop</span>
+              <span className="w-14 text-[11px] font-medium uppercase tracking-wider text-[var(--text-ghost)]">Mobile</span>
+              <span className="w-10 text-[11px] font-medium uppercase tracking-wider text-[var(--text-ghost)]">LH</span>
+              <span className="w-10 text-[11px] font-medium uppercase tracking-wider text-[var(--text-ghost)]">Weight</span>
             </div>
           </div>
           {brand.typography.scale.map((level) => {
@@ -86,7 +86,7 @@ export default function TypographyPlayground() {
               <div key={level.name} className="flex items-center gap-6 px-6 py-4">
                 <div className="w-[340px] shrink-0 overflow-hidden">
                   <p
-                    className="truncate text-gray-900"
+                    className="truncate text-[var(--text-primary)]"
                     style={{
                       fontFamily,
                       fontSize: level.desktop,
@@ -99,11 +99,11 @@ export default function TypographyPlayground() {
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="w-12 text-xs font-semibold text-gray-900">{level.name}</span>
-                  <span className="w-14 font-mono text-[11px] text-gray-400">{level.desktop}</span>
-                  <span className="w-14 font-mono text-[11px] text-gray-300">{level.mobile}</span>
-                  <span className="w-10 font-mono text-[11px] text-gray-300">{level.lineHeight}</span>
-                  <span className="w-10 font-mono text-[11px] text-gray-300">{level.weight}</span>
+                  <span className="w-12 text-xs font-semibold text-[var(--text-primary)]">{level.name}</span>
+                  <span className="w-14 font-mono text-[11px] text-[var(--text-ghost)]">{level.desktop}</span>
+                  <span className="w-14 font-mono text-[11px] text-[var(--text-placeholder)]">{level.mobile}</span>
+                  <span className="w-10 font-mono text-[11px] text-[var(--text-placeholder)]">{level.lineHeight}</span>
+                  <span className="w-10 font-mono text-[11px] text-[var(--text-placeholder)]">{level.weight}</span>
                 </div>
               </div>
             )
@@ -116,19 +116,19 @@ export default function TypographyPlayground() {
         <p className="section-label mb-4">Font Pairing</p>
         <div className="card p-8">
           <p
-            className="text-4xl font-bold text-gray-900"
+            className="text-4xl font-bold text-[var(--text-primary)]"
             style={{ fontFamily: tokens.heading }}
           >
             {brand.tagline}
           </p>
           <p
-            className="mt-4 max-w-xl text-base leading-relaxed text-gray-600"
+            className="mt-4 max-w-xl text-base leading-relaxed text-[var(--text-secondary)]"
             style={{ fontFamily: tokens.body }}
           >
             {brand.description}
           </p>
           <p
-            className="mt-4 text-sm text-gray-400"
+            className="mt-4 text-sm text-[var(--text-ghost)]"
             style={{ fontFamily: tokens.mono }}
           >
             font-family: {tokens.heading} + {tokens.body}
@@ -144,32 +144,32 @@ export default function TypographyPlayground() {
             type="text"
             value={preview}
             onChange={(e) => setPreview(e.target.value)}
-            className="mb-6 w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-gray-300"
+            className="mb-6 w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] px-4 py-2.5 text-sm text-[var(--text-muted)] outline-none focus:border-[var(--text-tertiary)]"
             placeholder="Digite o texto para preview..."
           />
           <div className="space-y-4">
             <div>
-              <p className="mb-1 text-[11px] text-gray-400">Heading — {tokens.heading}</p>
+              <p className="mb-1 text-[11px] text-[var(--text-ghost)]">Heading — {tokens.heading}</p>
               <p
-                className="text-3xl font-bold text-gray-900"
+                className="text-3xl font-bold text-[var(--text-primary)]"
                 style={{ fontFamily: tokens.heading }}
               >
                 {preview}
               </p>
             </div>
             <div>
-              <p className="mb-1 text-[11px] text-gray-400">Body — {tokens.body}</p>
+              <p className="mb-1 text-[11px] text-[var(--text-ghost)]">Body — {tokens.body}</p>
               <p
-                className="text-base text-gray-700"
+                className="text-base text-[var(--text-muted)]"
                 style={{ fontFamily: tokens.body }}
               >
                 {preview}
               </p>
             </div>
             <div>
-              <p className="mb-1 text-[11px] text-gray-400">Mono — {tokens.mono}</p>
+              <p className="mb-1 text-[11px] text-[var(--text-ghost)]">Mono — {tokens.mono}</p>
               <p
-                className="text-sm text-gray-500"
+                className="text-sm text-[var(--text-secondary)]"
                 style={{ fontFamily: tokens.mono }}
               >
                 {preview}
@@ -185,8 +185,8 @@ export default function TypographyPlayground() {
         <div className="card p-6">
           <ul className="space-y-2">
             {brand.typography.rules.map((r) => (
-              <li key={r} className="flex items-start gap-2 text-sm text-gray-600">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-300" />
+              <li key={r} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--text-placeholder)]" />
                 {r}
               </li>
             ))}
