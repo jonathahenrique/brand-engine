@@ -76,12 +76,15 @@ export default function TokenBrowser() {
           <div className="card divide-y divide-gray-100">
             {brand.typography.scale.map((level) => {
               const fontFamily = level.font === 'heading' ? tokens.heading : level.font === 'mono' ? tokens.mono : tokens.body
+              const rawSize = parseInt(level.desktop)
+              // Scale down proportionally: sizes up to 24px stay as-is, larger sizes compress gradually
+              const displaySize = rawSize <= 24 ? rawSize : 24 + (rawSize - 24) * 0.4
               return (
                 <div key={level.name} className="flex items-center gap-4 px-5 py-4">
                   <span className="w-16 text-xs font-semibold text-gray-900">{level.name}</span>
                   <span
                     className="flex-1 truncate text-gray-700"
-                    style={{ fontFamily, fontSize: Math.min(parseInt(level.desktop), 32), fontWeight: level.weight }}
+                    style={{ fontFamily, fontSize: displaySize, fontWeight: level.weight, letterSpacing: level.letterSpacing }}
                   >
                     {brand.name}
                   </span>

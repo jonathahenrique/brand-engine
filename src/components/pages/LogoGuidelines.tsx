@@ -47,85 +47,90 @@ export default function LogoGuidelines() {
         <p className="mt-2 text-sm leading-relaxed text-gray-600">{logo.description}</p>
       </div>
 
-      {/* Logo Display — Main */}
+      {/* Logo Display — Main (Full Color) */}
       <div>
         <p className="section-label mb-4">Logo Principal</p>
         <div className="bento bento-2">
-          {/* Dark background */}
+          {/* Full color on dark */}
           <div
             className="card flex items-center justify-center overflow-hidden p-12"
-            style={{ backgroundColor: brand.theme.bg, minHeight: '260px' }}
+            style={{ backgroundColor: '#000000', minHeight: '260px' }}
           >
             {hasLogoFile && logoFile ? (
               <Image
                 src={logoFile}
-                alt={`${brand.name} logo on dark`}
+                alt={`${brand.name} logo full color on dark`}
                 width={280}
                 height={100}
                 className="h-auto w-[280px]"
-                style={{ filter: 'brightness(0) invert(1)' }}
               />
             ) : (
               <p
                 className="text-5xl font-bold"
-                style={{ color: brand.theme.text, fontFamily: `'Space Grotesk', system-ui` }}
+                style={{ color: brand.theme.primary, fontFamily: `'Space Grotesk', system-ui` }}
               >
                 {brand.name}
               </p>
             )}
           </div>
-          {/* Light background */}
+          {/* Full color on light */}
           <div
             className="card flex items-center justify-center overflow-hidden p-12"
-            style={{ backgroundColor: '#FAFAFA', minHeight: '260px' }}
+            style={{ backgroundColor: '#FFFFFF', minHeight: '260px' }}
           >
             {hasLogoFile && logoFile ? (
               <Image
                 src={logoFile}
-                alt={`${brand.name} logo on light`}
+                alt={`${brand.name} logo full color on light`}
                 width={280}
                 height={100}
                 className="h-auto w-[280px]"
-                style={{ filter: 'brightness(0)' }}
               />
             ) : (
               <p
                 className="text-5xl font-bold"
-                style={{ color: brand.theme.bg, fontFamily: `'Space Grotesk', system-ui` }}
+                style={{ color: brand.theme.primary, fontFamily: `'Space Grotesk', system-ui` }}
               >
                 {brand.name}
               </p>
             )}
           </div>
         </div>
+        <p className="mt-2 text-[11px] text-gray-400">
+          Logo full color somente sobre fundo preto ou branco puro. Para outros fundos, usar versao monocromatica.
+        </p>
       </div>
 
-      {/* Full Color on correct backgrounds */}
+      {/* Mono versions */}
       {hasLogoFile && logoFile && (
         <div>
-          <p className="section-label mb-4">Full Color</p>
+          <p className="section-label mb-4">Versões Monocromáticas</p>
           <div className="bento bento-2">
-            <div className="card flex items-center justify-center overflow-hidden p-12" style={{ backgroundColor: '#000000', minHeight: '200px' }}>
+            <div className="card relative flex items-center justify-center overflow-hidden p-12" style={{ backgroundColor: brand.theme.bg, minHeight: '200px' }}>
               <Image
                 src={logoFile}
-                alt={`${brand.name} color logo on black`}
+                alt={`${brand.name} logo white on dark`}
                 width={240}
                 height={80}
                 className="h-auto w-[240px]"
+                style={{ filter: 'brightness(0) invert(1)' }}
               />
+              <p className="absolute bottom-3 text-[10px] text-white/40">Branco sobre fundo escuro</p>
             </div>
-            <div className="card flex items-center justify-center overflow-hidden p-12" style={{ backgroundColor: '#FFFFFF', minHeight: '200px' }}>
+            <div className="card relative flex items-center justify-center overflow-hidden p-12" style={{ backgroundColor: '#F5F5F5', minHeight: '200px' }}>
               <Image
                 src={logoFile}
-                alt={`${brand.name} color logo on white`}
+                alt={`${brand.name} logo black on light`}
                 width={240}
                 height={80}
                 className="h-auto w-[240px]"
+                style={{ filter: 'brightness(0)' }}
               />
+              <p className="absolute bottom-3 text-[10px] text-gray-400">Preto sobre fundo claro</p>
             </div>
           </div>
           <p className="mt-2 text-[11px] text-gray-400">
-            Logo em cor somente sobre fundo preto ou branco puro. Para outros fundos, usar versao monocromatica.
+            Versões monocromáticas para uso em fundos que não sejam preto ou branco puro.
           </p>
         </div>
       )}
