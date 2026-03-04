@@ -264,11 +264,14 @@ export const spotify: BrandConfig = {
     concept: 'Sound Waves',
     description:
       'O logo completo e a combinacao do icone (circulo com tres ondas sonoras curvas) com a wordmark. A wordmark nunca pode aparecer sem o icone. O icone sozinho so deve ser usado quando o espaco e limitado ou a marca ja esta estabelecida.',
+    file: '/logos/spotify-logo-green.svg',
+    icon: '/logos/spotify-icon.svg',
+    transparent: true,
     variants: [
-      { name: 'Full Color (Green)', description: 'Logo verde — SOMENTE sobre fundo preto ou branco puro', file: '/logos/spotify-logo-green.svg' },
-      { name: 'Black', description: 'Logo preta para fundos claros', file: '/logos/spotify-logo-green.svg' },
-      { name: 'White', description: 'Logo branca para fundos escuros', file: '/logos/spotify-logo-green.svg' },
-      { name: 'Monochrome', description: 'Versao monocromatica para fundos que nao sao preto/branco', file: '/logos/spotify-logo-green.svg' },
+      { name: 'Full Color (Green)', type: 'full-color', description: 'Logo verde — SOMENTE sobre fundo preto ou branco puro', file: '/logos/spotify-logo-green.svg' },
+      { name: 'Black', type: 'mono-black', description: 'Logo preta para fundos claros' },
+      { name: 'White', type: 'mono-white', description: 'Logo branca para fundos escuros' },
+      { name: 'Monochrome', type: 'grayscale', description: 'Versao monocromatica para fundos que nao sao preto/branco' },
     ],
     rules: [
       'Zona de exclusao: metade da altura do icone ao redor do logo',

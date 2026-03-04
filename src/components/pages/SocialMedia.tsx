@@ -15,7 +15,7 @@ import {
   ImageIcon,
 } from 'lucide-react'
 
-type Provider = 'openrouter' | 'openai'
+type Provider = 'openrouter' | 'openai' | 'google'
 type ImageType = 'post' | 'post2' | 'story' | 'banner'
 
 interface BrandImages {
@@ -172,7 +172,7 @@ export default function SocialMedia() {
   // State
   const [images, setImages] = useState<BrandImages>({ post: null, post2: null, story: null, banner: null })
   const [loading, setLoading] = useState(true)
-  const [provider, setProvider] = useState<Provider>('openai')
+  const [provider, setProvider] = useState<Provider>('google')
   const [generating, setGenerating] = useState(false)
   const [generatingTypes, setGeneratingTypes] = useState<Set<ImageType>>(new Set())
   const [progress, setProgress] = useState({ done: 0, total: 0 })
@@ -325,6 +325,7 @@ export default function SocialMedia() {
               disabled={generating}
               className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-primary)] disabled:opacity-50"
             >
+              <option value="google">Google — Nano Banana 2 (créditos gratuitos)</option>
               <option value="openai">OpenAI — GPT Image 1 (~$0.12 total)</option>
               <option value="openrouter">OpenRouter — Gemini 2.5 Flash</option>
             </select>

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { callGoogleImageAPI } from '@/lib/google-image'
+import { trackUsage, getModelForProvider, estimateCost } from '@/lib/usage-tracker'
 
 export const maxDuration = 60
 
@@ -8,7 +10,7 @@ type ImageType = 'post' | 'post2' | 'story' | 'banner'
 
 interface GenerateRequest {
   prompt: string
-  provider: 'openrouter' | 'openai'
+  provider: 'openrouter' | 'openai' | 'google'
   size?: string
   brandSlug?: string
   imageType?: ImageType
@@ -89,13 +91,44 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 })
     }
 
+    const start = Date.now()
     let result: NextResponse
+    let status: 'success' | 'error' = 'success'
 
-    if (provider === 'openai') {
-      result = await generateWithOpenAI(prompt, size)
-    } else {
-      result = await generateWithOpenRouter(prompt, size)
+    try {
+      if (provider === 'google') {
+        result = await generateWithGoogle(prompt, size)
+      } else if (provider === 'openai') {
+        result = await generateWithOpenAI(prompt, size)
+      } else {
+        result = await generateWithOpenRouter(prompt, size)
+      }
+    } catch (err) {
+      status = 'error'
+      trackUsage({
+        provider: provider as 'google' | 'openai' | 'openrouter',
+        model: getModelForProvider(provider as 'google' | 'openai' | 'openrouter'),
+        operation: 'image-gen',
+        brandSlug: brandSlug || 'unknown',
+        imageCount: 0,
+        estimatedCostUSD: 0,
+        status: 'error',
+        durationMs: Date.now() - start,
+      }).catch(() => {})
+      throw err
     }
+
+    // Track successful usage
+    trackUsage({
+      provider: provider as 'google' | 'openai' | 'openrouter',
+      model: getModelForProvider(provider as 'google' | 'openai' | 'openrouter'),
+      operation: 'image-gen',
+      brandSlug: brandSlug || 'unknown',
+      imageCount: 1,
+      estimatedCostUSD: estimateCost(provider as 'google' | 'openai' | 'openrouter'),
+      status,
+      durationMs: Date.now() - start,
+    }).catch(() => {})
 
     // Se brandSlug e imageType foram fornecidos, salva em disco
     if (brandSlug && imageType) {
@@ -115,6 +148,19 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+async function generateWithGoogle(prompt: string, size: string) {
+  const [w, h] = size.split('x').map(Number)
+  const fullPrompt =
+    `Generate an image with these exact specifications. Output ONLY the image, no text explanation.\n\n` +
+    `Image dimensions: ${w}x${h} pixels (aspect ratio ${w > h ? '16:9' : w === h ? '1:1' : '4:5'})\n\n` +
+    prompt
+
+  const result = await callGoogleImageAPI({ prompt: fullPrompt })
+  return NextResponse.json({
+    url: `data:${result.mimeType};base64,${result.imageBase64}`,
+  })
 }
 
 async function generateWithOpenAI(prompt: string, size: string) {

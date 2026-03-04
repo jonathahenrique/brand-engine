@@ -244,10 +244,12 @@ export const rupta: BrandConfig = {
     concept: 'The Displacement',
     description:
       'A palavra "RUPTA" E o logo. Duas camadas de texto sobrepostas, divididas por clipPath horizontal. Metade superior branca deslocada 3px a direita. Metade inferior Ruptura Red deslocada 4px abaixo.',
+    file: '/logos/rupta-wordmark.svg',
+    transparent: true,
     variants: [
-      { name: 'Wordmark Dark', description: 'Upper branca, lower vermelha, sobre fundo escuro', file: 'rupta-wordmark.svg' },
-      { name: 'Wordmark Light', description: 'Upper preta, lower vermelha, sobre fundo claro', file: 'rupta-wordmark-light.svg' },
-      { name: 'Wordmark Mono', description: 'Monocromatica — impressao P&B', file: 'rupta-wordmark-mono.svg' },
+      { name: 'Wordmark Dark', type: 'full-color', description: 'Upper branca, lower vermelha, sobre fundo escuro', file: '/logos/rupta-wordmark.svg' },
+      { name: 'Wordmark Light', type: 'custom', description: 'Upper preta, lower vermelha, sobre fundo claro', filter: { css: 'none', bg: '#FAFAFA' } },
+      { name: 'Wordmark Mono', type: 'mono-white', description: 'Monocromatica — impressao P&B' },
     ],
     rules: [
       'Area de protecao: 1x a altura da wordmark ao redor',

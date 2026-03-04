@@ -15,6 +15,7 @@ import {
   Zap,
   Layers,
   Share2,
+  BarChart3,
   ChevronLeft,
   Menu,
   X,
@@ -29,6 +30,7 @@ const navItems = [
   { label: 'Motion', href: '/motion', icon: Zap },
   { label: 'Tokens', href: '/tokens', icon: Layers },
   { label: 'Social Media', href: '/social-media', icon: Share2 },
+  { label: 'Usage', href: '/usage', icon: BarChart3 },
 ]
 
 export default function Sidebar() {
@@ -45,7 +47,9 @@ export default function Sidebar() {
           <BrandLogo
             slug={brand.slug}
             name={brand.name}
-            logoFile={brand.logo.variants.find(v => v.file)?.file}
+            logoFile={brand.logo.file || brand.logo.variants.find(v => v.file)?.file}
+            iconFile={brand.logo.icon}
+            transparent={brand.logo.transparent}
             variant="badge"
             theme={brand.theme}
             className="h-10 w-10"

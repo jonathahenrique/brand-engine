@@ -6,29 +6,30 @@ interface BrandLogoProps {
   slug: string
   name: string
   logoFile?: string
+  iconFile?: string
+  transparent?: boolean
   variant: 'icon' | 'full' | 'badge'
   theme: { primary: string; secondary: string }
+  filter?: string
   className?: string
 }
 
-export function BrandLogo({ slug, name, logoFile, variant, theme, className }: BrandLogoProps) {
-  const iconFile = logoFile ? `/logos/${slug}-icon.svg` : null
-
+export function BrandLogo({ slug, name, logoFile, iconFile, transparent, variant, theme, filter, className }: BrandLogoProps) {
   if (variant === 'badge') {
-    // For sidebar header and home page cards — shows icon in a gradient badge
+    const badgeSrc = iconFile || logoFile
     return (
       <div
         className={`flex items-center justify-center rounded-xl ${className || 'h-10 w-10'}`}
         style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
       >
-        {logoFile ? (
+        {badgeSrc ? (
           <Image
-            src={iconFile || logoFile}
+            src={badgeSrc}
             alt={name}
             width={96}
             height={96}
             className="h-[60%] w-[60%] object-contain"
-            style={{ filter: 'brightness(0) invert(1)' }}
+            style={transparent ? undefined : { filter: 'brightness(0) invert(1)' }}
           />
         ) : (
           <span className="text-sm font-bold text-white">{name.charAt(0)}</span>
@@ -45,7 +46,7 @@ export function BrandLogo({ slug, name, logoFile, variant, theme, className }: B
         width={200}
         height={60}
         className={className || 'h-12 w-auto'}
-        style={{ filter: 'brightness(0) invert(1)' }}
+        style={filter ? { filter } : undefined}
       />
     )
   }

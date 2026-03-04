@@ -246,10 +246,10 @@ export const nr10Master: BrandConfig = {
     description:
       'Logotipo combina o nome "NR-10 Master" com um elemento grafico que referencia um escudo de protecao ou simbolo eletrico (raio estilizado dentro de forma geometrica). Transmite seguranca, competencia tecnica e autoridade.',
     variants: [
-      { name: 'Logo Dark', description: 'Logo completo sobre fundo escuro' },
-      { name: 'Logo Light', description: 'Logo completo sobre fundo claro' },
-      { name: 'Logo Compacto', description: 'Versao reduzida para avatar e favicon' },
-      { name: 'Logo Mono', description: 'Versao monocromatica para impressao' },
+      { name: 'Logo Dark', type: 'full-color', description: 'Logo completo sobre fundo escuro' },
+      { name: 'Logo Light', type: 'full-color', description: 'Logo completo sobre fundo claro' },
+      { name: 'Logo Compacto', type: 'icon', description: 'Versao reduzida para avatar e favicon' },
+      { name: 'Logo Mono', type: 'grayscale', description: 'Versao monocromatica para impressao' },
     ],
     rules: [
       'Area de protecao: 1.5x a altura do simbolo',

@@ -62,10 +62,21 @@ export interface BrandValue {
   description: string
 }
 
+export type LogoVariantType =
+  | 'full-color'
+  | 'mono-white'
+  | 'mono-black'
+  | 'grayscale'
+  | 'icon'
+  | 'custom'
+
 export interface LogoVariant {
   name: string
+  type: LogoVariantType
   description: string
   file?: string
+  filter?: { css: string; bg: string }
+  processed?: boolean
 }
 
 export interface DosAndDonts {
@@ -265,6 +276,9 @@ export interface BrandConfig {
   logo: {
     concept: string
     description: string
+    file?: string
+    icon?: string
+    transparent?: boolean
     variants: LogoVariant[]
     rules: string[]
     misuse: string[]

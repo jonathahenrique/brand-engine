@@ -62,7 +62,9 @@ export default function HomePage() {
                   <BrandLogo
                     slug={brand.slug}
                     name={brand.name}
-                    logoFile={brand.logo.variants.find(v => v.file)?.file}
+                    logoFile={brand.logo.file || brand.logo.variants.find(v => v.file)?.file}
+                    iconFile={brand.logo.icon}
+                    transparent={brand.logo.transparent}
                     variant="badge"
                     theme={brand.theme}
                     className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm"

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useMemo } from 'react'
 import type { BrandConfig } from '@/types/brand'
+import FontLoader from '@/components/ui/FontLoader'
 
 interface BrandContextValue {
   brand: BrandConfig
@@ -58,6 +59,7 @@ export function BrandProvider({
 
   return (
     <BrandContext value={{ brand, tokens }}>
+      <FontLoader />
       <div style={cssVars}>
         {children}
       </div>

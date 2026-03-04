@@ -106,9 +106,12 @@ export default function BrandOverview() {
             <BrandLogo
               slug={brand.slug}
               name={brand.name}
-              logoFile={brand.logo.variants.find(v => v.file)?.file}
+              logoFile={brand.logo.file || brand.logo.variants.find(v => v.file)?.file}
+              iconFile={brand.logo.icon}
+              transparent={brand.logo.transparent}
               variant="full"
               theme={brand.theme}
+              filter={brand.logo.transparent ? undefined : 'brightness(0) invert(1)'}
             />
             <p className="mt-2 max-w-lg text-sm text-white/80">{brand.tagline}</p>
           </div>
@@ -117,7 +120,9 @@ export default function BrandOverview() {
             <BrandLogo
               slug={brand.slug}
               name={brand.name}
-              logoFile={brand.logo.variants.find(v => v.file)?.file}
+              logoFile={brand.logo.file || brand.logo.variants.find(v => v.file)?.file}
+              iconFile={brand.logo.icon}
+              transparent={brand.logo.transparent}
               variant="badge"
               theme={brand.theme}
               className="h-48 w-48"

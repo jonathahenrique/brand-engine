@@ -92,6 +92,9 @@ export function buildImagePrompt(brand: BrandConfig, ctx: PromptContext): string
       (ctx.body ? `- Supporting text: "${ctx.body}"\n` : '') +
       (ctx.postType ? `- Content category: ${ctx.postType}\n` : '') +
       `- Include the brand name "${brand.name}" subtly (small text or logo area)\n` +
+      `- Render ALL text with pixel-perfect accuracy. Each word must be spelled correctly.\n` +
+      `- Text "${ctx.headline}" must appear EXACTLY as written, letter by letter.\n` +
+      `- Use proper kerning and anti-aliasing for all typographic elements.\n` +
       `- Text must be perfectly legible — never obscured by images or effects`,
 
     // 7. DESIGN REQUIREMENTS
