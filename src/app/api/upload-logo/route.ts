@@ -14,6 +14,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'file and slug are required' }, { status: 400 })
     }
 
+    // Validate slug to prevent path traversal
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      return NextResponse.json({ error: 'Invalid slug format' }, { status: 400 })
+    }
+
     // Validate file type
     const validTypes = ['image/png', 'image/webp', 'image/svg+xml', 'image/jpeg']
     if (!validTypes.includes(file.type)) {

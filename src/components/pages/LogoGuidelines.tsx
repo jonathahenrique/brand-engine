@@ -3,161 +3,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { useBrand } from '@/context/BrandContext'
-import type { LogoVariant, LogoVariantType } from '@/types/brand'
 import { Sparkles, Loader2, AlertCircle, Check, Upload } from 'lucide-react'
 
 type Provider = 'openrouter' | 'openai' | 'google'
 type PanelStep = 'idle' | 'uploading' | 'ready' | 'generating' | 'done'
 
 interface GeneratedVariants {
-  'full-color'?: string
-  'icon'?: string
-  'mono-white'?: string
-  'mono-black'?: string
-  'grayscale'?: string
-  'full-logo-ai'?: string
+  'mono-light'?: string
+  'mono-dark'?: string
   'icon-ai'?: string
-}
-
-/* ── Types that are safe for CSS filter approximation ── */
-const SAFE_FOR_CSS_FILTER: Set<LogoVariantType> = new Set(['full-color', 'icon'])
-
-/* ── Tier 1: CSS filter map by variant type ── */
-const TYPE_DISPLAY_MAP: Record<
-  Exclude<LogoVariantType, 'custom'>,
-  (brandBg: string) => { css: string; bg: string }
-> = {
-  'full-color': (brandBg) => ({ css: 'none', bg: brandBg }),
-  'mono-white': (brandBg) => ({ css: 'brightness(0) invert(1)', bg: brandBg }),
-  'mono-black': () => ({ css: 'brightness(0)', bg: '#F5F5F5' }),
-  'grayscale': () => ({ css: 'grayscale(1)', bg: '#FAFAFA' }),
-  'icon': (brandBg) => ({ css: 'none', bg: brandBg }),
-}
-
-function getVariantDisplay(
-  variant: LogoVariant,
-  brandBg: string,
-): { css: string; bg: string } {
-  // Processed files need no CSS filter
-  if (variant.processed && variant.file) {
-    const mapper = TYPE_DISPLAY_MAP[variant.type as Exclude<LogoVariantType, 'custom'>]
-    const bg = mapper ? mapper(brandBg).bg : brandBg
-    return { css: 'none', bg }
-  }
-  if (variant.type === 'custom' && variant.filter) {
-    return variant.filter
-  }
-  const mapper = TYPE_DISPLAY_MAP[variant.type as Exclude<LogoVariantType, 'custom'>]
-  return mapper ? mapper(brandBg) : { css: 'none', bg: brandBg }
-}
-
-/* ── Variant card with safe fallback ── */
-function VariantCard({
-  variant,
-  logoFile,
-  brandName,
-  brandBg,
-  headingFont,
-  hasTransparentLogo,
-}: {
-  variant: LogoVariant
-  logoFile?: string
-  brandName: string
-  brandBg: string
-  headingFont: string
-  hasTransparentLogo: boolean
-}) {
-  const display = getVariantDisplay(variant, brandBg)
-  const hasProcessedFile = variant.processed && variant.file
-  const hasVariantFile = !!variant.file
-
-  // Determine what to render:
-  // 1. Variant has its own file → show it (no filter if processed, with filter if not processed)
-  // 2. No variant file + type is safe (full-color/icon) → show logoFile without filter
-  // 3. No variant file + type is mono/grayscale + logo is multi-color → placeholder (NO destructive CSS)
-  // 4. No variant file + type is mono/grayscale + logo is NOT multi-color → CSS filter approx
-  const isSafeType = SAFE_FOR_CSS_FILTER.has(variant.type)
-  const isDestructiveType = !isSafeType && variant.type !== 'custom'
-  const shouldShowPlaceholder = !hasVariantFile && isDestructiveType && hasTransparentLogo && !variant.filter
-
-  return (
-    <div className="card overflow-hidden">
-      <div
-        className="relative flex items-center justify-center p-8"
-        style={{ backgroundColor: display.bg, minHeight: '140px' }}
-      >
-        {shouldShowPlaceholder ? (
-          /* Placeholder for mono variants without processed file on multi-color logos */
-          <div className="flex flex-col items-center gap-2">
-            <p
-              className="text-2xl font-bold opacity-30"
-              style={{
-                color: variant.type === 'mono-black' ? '#1A1A1A' : '#FFFFFF',
-                fontFamily: `'${headingFont}', system-ui`,
-              }}
-            >
-              {brandName}
-            </p>
-            <span className="rounded bg-black/20 px-2 py-1 text-[9px] font-medium text-white/60 backdrop-blur-sm">
-              Run process-logo.ts
-            </span>
-          </div>
-        ) : hasVariantFile ? (
-          <>
-            <Image
-              src={variant.file!}
-              alt={variant.name}
-              width={180}
-              height={60}
-              className="h-auto w-[180px]"
-              style={hasProcessedFile ? undefined : { filter: display.css }}
-            />
-            {hasProcessedFile && (
-              <span className="absolute right-2 top-2 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-medium text-emerald-400 backdrop-blur-sm">
-                Processed
-              </span>
-            )}
-          </>
-        ) : logoFile && isSafeType ? (
-          <Image
-            src={logoFile}
-            alt={variant.name}
-            width={180}
-            height={60}
-            className="h-auto w-[180px]"
-          />
-        ) : logoFile ? (
-          <>
-            <Image
-              src={logoFile}
-              alt={variant.name}
-              width={180}
-              height={60}
-              className="h-auto w-[180px]"
-              style={{ filter: display.css }}
-            />
-            <span className="absolute right-2 top-2 rounded bg-black/40 px-1.5 py-0.5 text-[9px] font-medium text-white/70 backdrop-blur-sm">
-              ≈ CSS approx.
-            </span>
-          </>
-        ) : (
-          <p
-            className="text-3xl font-bold"
-            style={{
-              color: display.css === 'brightness(0)' ? '#1A1A1A' : '#FFFFFF',
-              fontFamily: `'${headingFont}', system-ui`,
-            }}
-          >
-            {brandName}
-          </p>
-        )}
-      </div>
-      <div className="p-4">
-        <p className="text-sm font-semibold text-[var(--text-primary)]">{variant.name}</p>
-        <p className="mt-1 text-xs text-[var(--text-secondary)]">{variant.description}</p>
-      </div>
-    </div>
-  )
+  'stacked-ai'?: string
 }
 
 export default function LogoGuidelines() {
@@ -167,12 +22,13 @@ export default function LogoGuidelines() {
   const logoFile = logo.file || logo.variants.find(v => v.file)?.file
   const iconFile = logo.icon
   const headingFont = brand.typography.stack.find(f => f.role === 'display')?.font || 'system-ui'
-  const hasProcessedVariants = logo.variants.some(v => v.processed)
   const hasTransparentLogo = logo.transparent === true
 
   // Find processed mono files for the mono sections
-  const monoWhiteVariant = logo.variants.find(v => v.type === 'mono-white' && v.file && v.processed)
-  const monoBlackVariant = logo.variants.find(v => v.type === 'mono-black' && v.file && v.processed)
+  const monoLightVariant = logo.variants.find(v => v.type === 'mono-light' && v.file)
+  const monoDarkVariant = logo.variants.find(v => v.type === 'mono-dark' && v.file)
+  const stackedVariant = logo.variants.find(v => v.type === 'stacked')
+  const iconVariant = logo.variants.find(v => v.type === 'icon')
 
   // ── AI Generation state ──
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -208,7 +64,6 @@ export default function LogoGuidelines() {
     setPanelStep('uploading')
     setGenErrors([])
 
-    // Local preview
     const previewUrl = URL.createObjectURL(file)
     setUploadPreview(previewUrl)
 
@@ -242,16 +97,14 @@ export default function LogoGuidelines() {
     if (file) handleUpload(file)
   }
 
-  // ── Generation handler ──
-  const handleGenerate = async () => {
+  // ── Process Sharp Mono ──
+  const handleProcessMono = async () => {
     if (!sourceFile) return
     setPanelStep('generating')
     setGenErrors([])
-    const errors: string[] = []
-    setGenProgress({ done: 0, total: 2 })
+    setGenProgress({ done: 0, total: 1 })
+    setGenStep('Processando variantes mono (sharp)...')
 
-    // Step 1: Process sharp variants (mono-white, mono-black, grayscale)
-    setGenStep('Processando variantes (sharp)...')
     try {
       const res = await fetch('/api/generate-logo', {
         method: 'POST',
@@ -263,17 +116,28 @@ export default function LogoGuidelines() {
       const ts = Date.now()
       setGenVariants(prev => ({
         ...prev,
-        'mono-white': `${data.variants['mono-white']}?t=${ts}`,
-        'mono-black': `${data.variants['mono-black']}?t=${ts}`,
-        'grayscale': `${data.variants.grayscale}?t=${ts}`,
-        'full-color': `${data.variants['full-color']}?t=${ts}`,
+        'mono-light': `${data.variants['mono-light']}?t=${ts}`,
+        'mono-dark': `${data.variants['mono-dark']}?t=${ts}`,
       }))
+      setGenProgress({ done: 1, total: 1 })
+      setGenStep('')
+      setPanelStep('done')
     } catch (err) {
-      errors.push(`Variantes: ${err instanceof Error ? err.message : 'Erro desconhecido'}`)
+      setGenErrors([`Mono: ${err instanceof Error ? err.message : 'Erro desconhecido'}`])
+      setGenStep('')
+      setPanelStep('ready')
     }
-    setGenProgress(prev => ({ ...prev, done: prev.done + 1 }))
+  }
 
-    // Step 2: Extract icon with AI
+  // ── Generate AI variants (icon + stacked) ──
+  const handleGenerateAI = async () => {
+    if (!sourceFile) return
+    setPanelStep('generating')
+    setGenErrors([])
+    const errors: string[] = []
+    setGenProgress({ done: 0, total: 2 })
+
+    // 1. Extract icon with AI
     setGenStep('Extraindo ícone com IA...')
     try {
       const res = await fetch('/api/generate-logo', {
@@ -287,7 +151,23 @@ export default function LogoGuidelines() {
     } catch (err) {
       errors.push(`Ícone: ${err instanceof Error ? err.message : 'Erro desconhecido'}`)
     }
-    setGenProgress(prev => ({ ...prev, done: prev.done + 1 }))
+    setGenProgress({ done: 1, total: 2 })
+
+    // 2. Generate stacked layout with AI
+    setGenStep('Gerando layout vertical com IA...')
+    try {
+      const res = await fetch('/api/generate-logo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operation: 'generate-stacked', slug: brand.slug, provider, sourceFile }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      setGenVariants(prev => ({ ...prev, 'stacked-ai': `${data.stacked}?t=${Date.now()}` }))
+    } catch (err) {
+      errors.push(`Vertical: ${err instanceof Error ? err.message : 'Erro desconhecido'}`)
+    }
+    setGenProgress({ done: 2, total: 2 })
 
     setGenErrors(errors)
     setGenStep('')
@@ -313,24 +193,11 @@ export default function LogoGuidelines() {
         <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">{logo.description}</p>
       </div>
 
-      {/* Processing hint banner */}
-      {logoFile && !hasProcessedVariants && panelStep === 'idle' && Object.keys(genVariants).length === 0 && (
-        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-          <p className="text-xs text-blue-400">
-            <span className="font-semibold">Tier 1 ativo:</span> variantes usam CSS filters como aproximação.
-            Para arquivos dedicados, execute:{' '}
-            <code className="rounded bg-blue-500/10 px-1.5 py-0.5 font-mono text-[11px]">
-              npx tsx scripts/process-logo.ts {brand.slug}
-            </code>
-          </p>
-        </div>
-      )}
-
       {/* ── Logo Variant Generator Panel ── */}
       <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-5 space-y-4">
         <p className="text-sm font-semibold text-[var(--text-primary)]">Gerador de Variantes</p>
 
-        {/* Hidden file input — outside drag zone */}
+        {/* Hidden file input */}
         <input
           ref={fileInputRef}
           type="file"
@@ -380,7 +247,7 @@ export default function LogoGuidelines() {
           >
             <Upload size={28} className="mb-3 text-[var(--text-ghost)]" />
             <p className="text-sm text-[var(--text-secondary)]">Arraste o logo principal aqui</p>
-            <p className="mt-1 text-xs text-[var(--text-ghost)]">PNG, WebP, SVG ou JPEG — máx. 10MB</p>
+            <p className="mt-1 text-xs text-[var(--text-ghost)]">PNG, WebP, SVG ou JPEG — max. 10MB</p>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -391,51 +258,64 @@ export default function LogoGuidelines() {
           </div>
         )}
 
-        {/* Provider + Generate button */}
+        {/* Two operation buttons */}
         {sourceFile && (
           <div className="flex flex-wrap items-center gap-3">
-            <select
-              value={provider}
-              onChange={(e) => setProvider(e.target.value as Provider)}
-              disabled={panelStep === 'generating'}
-              className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-primary)] disabled:opacity-50"
-            >
-              <option value="google">Google — Nano Banana 2 (créditos gratuitos)</option>
-              <option value="openai">OpenAI — GPT Image 1</option>
-              <option value="openrouter">OpenRouter — Gemini 2.5 Flash</option>
-            </select>
-
             <button
-              onClick={handleGenerate}
+              onClick={handleProcessMono}
               disabled={panelStep === 'generating'}
-              className="flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
-              style={{ backgroundColor: brand.theme.primary }}
+              className="flex items-center gap-2 rounded-lg border border-[var(--border-default)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-muted)] disabled:opacity-60"
             >
-              {panelStep === 'generating' ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  {genStep} ({genProgress.done}/{genProgress.total})
-                </>
+              {panelStep === 'generating' && genStep.includes('mono') ? (
+                <Loader2 size={16} className="animate-spin" />
               ) : (
-                <>
-                  <Sparkles size={16} />
-                  {panelStep === 'done' ? 'Regenerar Variantes' : 'Gerar Variantes'}
-                </>
+                <Check size={16} />
               )}
+              Processar Mono (Sharp)
             </button>
+
+            <div className="flex items-center gap-2">
+              <select
+                value={provider}
+                onChange={(e) => setProvider(e.target.value as Provider)}
+                disabled={panelStep === 'generating'}
+                className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-primary)] disabled:opacity-50"
+              >
+                <option value="google">Google — Nano Banana 2</option>
+                <option value="openai">OpenAI — GPT Image 1</option>
+                <option value="openrouter">OpenRouter — Gemini 2.5 Flash</option>
+              </select>
+
+              <button
+                onClick={handleGenerateAI}
+                disabled={panelStep === 'generating'}
+                className="flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+                style={{ backgroundColor: brand.theme.primary }}
+              >
+                {panelStep === 'generating' && genStep.includes('IA') ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Sparkles size={16} />
+                )}
+                Gerar com IA
+              </button>
+            </div>
           </div>
         )}
 
         {/* Progress bar */}
         {panelStep === 'generating' && (
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-muted)]">
-            <div
-              className="h-full rounded-full transition-all duration-500"
-              style={{
-                width: `${genProgress.total > 0 ? (genProgress.done / genProgress.total) * 100 : 0}%`,
-                backgroundColor: brand.theme.primary,
-              }}
-            />
+          <div className="space-y-1">
+            <p className="text-xs text-[var(--text-secondary)]">{genStep}</p>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-muted)]">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  width: `${genProgress.total > 0 ? (genProgress.done / genProgress.total) * 100 : 0}%`,
+                  backgroundColor: brand.theme.primary,
+                }}
+              />
+            </div>
           </div>
         )}
 
@@ -475,7 +355,7 @@ export default function LogoGuidelines() {
             {logoFile ? (
               <Image
                 src={logoFile}
-                alt={`${brand.name} logo full color on dark`}
+                alt={`${brand.name} logo on dark`}
                 width={280}
                 height={100}
                 className="h-auto w-[280px]"
@@ -489,7 +369,7 @@ export default function LogoGuidelines() {
               </p>
             )}
           </div>
-          {/* Full color on light — use gray bg if logo has white parts */}
+          {/* Full color on light */}
           <div
             className="card flex items-center justify-center overflow-hidden p-12"
             style={{ backgroundColor: hasTransparentLogo ? '#E8E8E8' : '#FFFFFF', minHeight: '260px' }}
@@ -497,7 +377,7 @@ export default function LogoGuidelines() {
             {logoFile ? (
               <Image
                 src={logoFile}
-                alt={`${brand.name} logo full color on light`}
+                alt={`${brand.name} logo on light`}
                 width={280}
                 height={100}
                 className="h-auto w-[280px]"
@@ -513,29 +393,181 @@ export default function LogoGuidelines() {
           </div>
         </div>
         <p className="mt-2 text-[11px] text-[var(--text-ghost)]">
-          Logo full color sobre fundo escuro e fundo claro.{hasTransparentLogo ? ' Fundo cinza usado para preservar visibilidade de elementos brancos.' : ''}
+          Logo horizontal sobre fundo escuro e fundo claro.{hasTransparentLogo ? ' Fundo cinza usado para preservar visibilidade de elementos brancos.' : ''}
         </p>
+      </div>
+
+      {/* Layout Variations — Stacked + Icon */}
+      <div>
+        <p className="section-label mb-4">Variações de Layout</p>
+        <div className="bento bento-2">
+          {/* Stacked / Vertical */}
+          <div className="card overflow-hidden">
+            <div
+              className="relative flex items-center justify-center p-8"
+              style={{ backgroundColor: brand.theme.bg, minHeight: '200px' }}
+            >
+              {stackedVariant?.file ? (
+                <>
+                  <Image
+                    src={stackedVariant.file}
+                    alt={`${brand.name} logo vertical`}
+                    width={180}
+                    height={200}
+                    className="h-auto max-h-[160px] w-auto max-w-[180px]"
+                  />
+                  {stackedVariant.source && (
+                    <span className={`absolute right-2 top-2 rounded px-1.5 py-0.5 text-[9px] font-medium backdrop-blur-sm ${
+                      stackedVariant.source === 'ai' ? 'bg-purple-500/20 text-purple-400' : 'bg-emerald-500/20 text-emerald-400'
+                    }`}>
+                      {stackedVariant.source === 'ai' ? 'AI Generated' : 'Processed'}
+                    </span>
+                  )}
+                </>
+              ) : genVariants['stacked-ai'] ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={genVariants['stacked-ai']}
+                    alt={`${brand.name} logo vertical`}
+                    className="h-auto max-h-[160px] w-auto max-w-[180px]"
+                  />
+                  <span className="absolute right-2 top-2 rounded bg-purple-500/20 px-1.5 py-0.5 text-[9px] font-medium text-purple-400 backdrop-blur-sm">
+                    AI Generated
+                  </span>
+                </>
+              ) : (
+                <div className="flex flex-col items-center gap-3">
+                  <div
+                    className="flex h-16 w-16 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: brand.theme.primary + '20' }}
+                  >
+                    <span
+                      className="text-2xl font-bold"
+                      style={{ color: brand.theme.primary, fontFamily: `'${headingFont}', system-ui` }}
+                    >
+                      {brand.name.charAt(0)}
+                    </span>
+                  </div>
+                  <p
+                    className="text-sm font-bold opacity-30"
+                    style={{ color: '#FFFFFF', fontFamily: `'${headingFont}', system-ui` }}
+                  >
+                    {brand.name}
+                  </p>
+                  <span className="rounded bg-black/20 px-2 py-1 text-[9px] font-medium text-white/50 backdrop-blur-sm">
+                    Gerar com IA
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="p-4">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">
+                {stackedVariant?.name || 'Logo Vertical'}
+              </p>
+              <p className="mt-1 text-xs text-[var(--text-secondary)]">
+                {stackedVariant?.description || 'Logo empilhado — social media, mobile, espaços restritos'}
+              </p>
+            </div>
+          </div>
+
+          {/* Icon */}
+          <div className="card overflow-hidden">
+            <div
+              className="relative flex items-center justify-center p-8"
+              style={{ backgroundColor: brand.theme.bg, minHeight: '200px' }}
+            >
+              {iconVariant?.file || iconFile ? (
+                <>
+                  <Image
+                    src={(iconVariant?.file || iconFile)!}
+                    alt={`${brand.name} ícone`}
+                    width={120}
+                    height={120}
+                    className="h-auto max-h-[120px] w-auto max-w-[120px]"
+                  />
+                  {iconVariant?.source && (
+                    <span className={`absolute right-2 top-2 rounded px-1.5 py-0.5 text-[9px] font-medium backdrop-blur-sm ${
+                      iconVariant.source === 'ai' ? 'bg-purple-500/20 text-purple-400' : 'bg-emerald-500/20 text-emerald-400'
+                    }`}>
+                      {iconVariant.source === 'ai' ? 'AI Generated' : 'Processed'}
+                    </span>
+                  )}
+                </>
+              ) : genVariants['icon-ai'] ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={genVariants['icon-ai']}
+                    alt={`${brand.name} ícone`}
+                    className="h-auto max-h-[120px] w-auto max-w-[120px]"
+                  />
+                  <span className="absolute right-2 top-2 rounded bg-purple-500/20 px-1.5 py-0.5 text-[9px] font-medium text-purple-400 backdrop-blur-sm">
+                    AI Generated
+                  </span>
+                </>
+              ) : (
+                <div className="flex flex-col items-center gap-3">
+                  <div
+                    className="flex h-16 w-16 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: brand.theme.primary + '20' }}
+                  >
+                    <span
+                      className="text-2xl font-bold"
+                      style={{ color: brand.theme.primary, fontFamily: `'${headingFont}', system-ui` }}
+                    >
+                      {brand.name.charAt(0)}
+                    </span>
+                  </div>
+                  <span className="rounded bg-black/20 px-2 py-1 text-[9px] font-medium text-white/50 backdrop-blur-sm">
+                    Gerar com IA
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="p-4">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">
+                {iconVariant?.name || 'Ícone'}
+              </p>
+              <p className="mt-1 text-xs text-[var(--text-secondary)]">
+                {iconVariant?.description || 'Somente o símbolo — favicon, app icon, perfil'}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Mono versions */}
       <div>
-        <p className="section-label mb-4">Versões Monocromáticas</p>
+        <p className="section-label mb-4">Versoes Monocromaticas</p>
         <div className="bento bento-2">
-          {/* White on dark */}
+          {/* Light on dark */}
           <div className="card relative flex items-center justify-center overflow-hidden p-12" style={{ backgroundColor: brand.theme.bg, minHeight: '200px' }}>
-            {monoWhiteVariant ? (
+            {monoLightVariant ? (
               <Image
-                src={monoWhiteVariant.file!}
-                alt={`${brand.name} logo white on dark`}
+                src={monoLightVariant.file!}
+                alt={`${brand.name} mono light`}
                 width={240}
                 height={80}
                 className="h-auto w-[240px]"
               />
+            ) : genVariants['mono-light'] ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={genVariants['mono-light']}
+                  alt={`${brand.name} mono light`}
+                  className="h-auto w-[240px]"
+                />
+                <span className="absolute right-2 top-2 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-medium text-emerald-400 backdrop-blur-sm">
+                  Processed
+                </span>
+              </>
             ) : logoFile && !hasTransparentLogo ? (
               <>
                 <Image
                   src={logoFile}
-                  alt={`${brand.name} logo white on dark`}
+                  alt={`${brand.name} mono light`}
                   width={240}
                   height={80}
                   className="h-auto w-[240px]"
@@ -555,28 +587,40 @@ export default function LogoGuidelines() {
                 </p>
                 {logoFile && (
                   <span className="rounded bg-black/30 px-2 py-1 text-[9px] text-white/50">
-                    Run process-logo.ts for accurate mono
+                    Upload + Processar Mono
                   </span>
                 )}
               </div>
             )}
-            <p className="absolute bottom-3 text-[10px] text-white/40">Branco sobre fundo escuro</p>
+            <p className="absolute bottom-3 text-[10px] text-white/40">Mono claro sobre fundo escuro</p>
           </div>
-          {/* Black on light */}
+          {/* Dark on light */}
           <div className="card relative flex items-center justify-center overflow-hidden p-12" style={{ backgroundColor: '#F5F5F5', minHeight: '200px' }}>
-            {monoBlackVariant ? (
+            {monoDarkVariant ? (
               <Image
-                src={monoBlackVariant.file!}
-                alt={`${brand.name} logo black on light`}
+                src={monoDarkVariant.file!}
+                alt={`${brand.name} mono dark`}
                 width={240}
                 height={80}
                 className="h-auto w-[240px]"
               />
+            ) : genVariants['mono-dark'] ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={genVariants['mono-dark']}
+                  alt={`${brand.name} mono dark`}
+                  className="h-auto w-[240px]"
+                />
+                <span className="absolute right-2 top-2 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-medium text-emerald-400 backdrop-blur-sm">
+                  Processed
+                </span>
+              </>
             ) : logoFile && !hasTransparentLogo ? (
               <>
                 <Image
                   src={logoFile}
-                  alt={`${brand.name} logo black on light`}
+                  alt={`${brand.name} mono dark`}
                   width={240}
                   height={80}
                   className="h-auto w-[240px]"
@@ -596,22 +640,19 @@ export default function LogoGuidelines() {
                 </p>
                 {logoFile && (
                   <span className="rounded bg-white/60 px-2 py-1 text-[9px] text-black/50">
-                    Run process-logo.ts for accurate mono
+                    Upload + Processar Mono
                   </span>
                 )}
               </div>
             )}
-            <p className="absolute bottom-3 text-[10px] text-[var(--text-ghost)]">Preto sobre fundo claro</p>
+            <p className="absolute bottom-3 text-[10px] text-[var(--text-ghost)]">Mono escuro sobre fundo claro</p>
           </div>
         </div>
-        <p className="mt-2 text-[11px] text-[var(--text-ghost)]">
-          Versões monocromáticas para uso em fundos que não sejam preto ou branco puro.
-        </p>
       </div>
 
       {/* Clearspace */}
       <div>
-        <p className="section-label mb-4">Zona de Exclusão (Clearspace)</p>
+        <p className="section-label mb-4">Zona de Exclusao (Clearspace)</p>
         <div className="card flex items-center justify-center overflow-hidden p-12" style={{ backgroundColor: '#FAFAFA', minHeight: '280px' }}>
           <div className="relative inline-flex items-center justify-center">
             {/* Clearspace guides */}
@@ -632,9 +673,9 @@ export default function LogoGuidelines() {
               <div className="h-px w-6 bg-blue-300" />
               <span className="text-[9px] font-medium text-blue-400">x</span>
             </div>
-            {monoBlackVariant ? (
+            {monoDarkVariant ? (
               <Image
-                src={monoBlackVariant.file!}
+                src={monoDarkVariant.file!}
                 alt={`${brand.name} clearspace`}
                 width={200}
                 height={70}
@@ -660,21 +701,21 @@ export default function LogoGuidelines() {
           </div>
         </div>
         <p className="mt-2 text-[11px] text-[var(--text-ghost)]">
-          Manter distância mínima de &quot;x&quot; (metade da altura do ícone) ao redor do logo. Nenhum elemento deve invadir essa zona.
+          Manter distancia minima de &quot;x&quot; (metade da altura do icone) ao redor do logo. Nenhum elemento deve invadir essa zona.
         </p>
       </div>
 
       {/* Minimum Size */}
       <div>
-        <p className="section-label mb-4">Tamanho Mínimo</p>
+        <p className="section-label mb-4">Tamanho Minimo</p>
         <div className="card p-8">
           <div className="flex items-end gap-12">
             {/* Full logo minimum */}
             <div className="flex flex-col items-center gap-3">
-              {monoBlackVariant ? (
+              {monoDarkVariant ? (
                 <Image
-                  src={monoBlackVariant.file!}
-                  alt="Logo mínimo"
+                  src={monoDarkVariant.file!}
+                  alt="Logo minimo"
                   width={70}
                   height={24}
                   className="h-auto w-[70px]"
@@ -682,7 +723,7 @@ export default function LogoGuidelines() {
               ) : logoFile ? (
                 <Image
                   src={logoFile}
-                  alt="Logo mínimo"
+                  alt="Logo minimo"
                   width={70}
                   height={24}
                   className="h-auto w-[70px]"
@@ -698,7 +739,7 @@ export default function LogoGuidelines() {
               )}
               <div className="text-center">
                 <p className="text-[11px] font-semibold text-[var(--text-muted)]">70px</p>
-                <p className="text-[10px] text-[var(--text-ghost)]">Digital mínimo</p>
+                <p className="text-[10px] text-[var(--text-ghost)]">Digital minimo</p>
               </div>
             </div>
             {/* Icon only minimum */}
@@ -706,7 +747,7 @@ export default function LogoGuidelines() {
               {iconFile ? (
                 <Image
                   src={iconFile}
-                  alt="Ícone mínimo"
+                  alt="Icone minimo"
                   width={21}
                   height={21}
                   className="h-[21px] w-[21px]"
@@ -714,7 +755,7 @@ export default function LogoGuidelines() {
               ) : logoFile ? (
                 <Image
                   src={logoFile}
-                  alt="Ícone mínimo"
+                  alt="Icone minimo"
                   width={21}
                   height={21}
                   className="h-[21px] w-[21px] object-contain"
@@ -734,15 +775,15 @@ export default function LogoGuidelines() {
               )}
               <div className="text-center">
                 <p className="text-[11px] font-semibold text-[var(--text-muted)]">21px</p>
-                <p className="text-[10px] text-[var(--text-ghost)]">Ícone mínimo</p>
+                <p className="text-[10px] text-[var(--text-ghost)]">Icone minimo</p>
               </div>
             </div>
             {/* Print minimum */}
             <div className="flex flex-col items-center gap-3">
-              {monoBlackVariant ? (
+              {monoDarkVariant ? (
                 <Image
-                  src={monoBlackVariant.file!}
-                  alt="Logo impresso mínimo"
+                  src={monoDarkVariant.file!}
+                  alt="Logo impresso minimo"
                   width={100}
                   height={35}
                   className="h-auto w-[100px]"
@@ -750,7 +791,7 @@ export default function LogoGuidelines() {
               ) : logoFile ? (
                 <Image
                   src={logoFile}
-                  alt="Logo impresso mínimo"
+                  alt="Logo impresso minimo"
                   width={100}
                   height={35}
                   className="h-auto w-[100px]"
@@ -766,87 +807,12 @@ export default function LogoGuidelines() {
               )}
               <div className="text-center">
                 <p className="text-[11px] font-semibold text-[var(--text-muted)]">20mm</p>
-                <p className="text-[10px] text-[var(--text-ghost)]">Impresso mínimo</p>
+                <p className="text-[10px] text-[var(--text-ghost)]">Impresso minimo</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Variants */}
-      <div>
-        <p className="section-label mb-4">Variantes</p>
-        <div className="grid gap-4 md:grid-cols-2">
-          {logo.variants.map((v) => (
-            <VariantCard
-              key={v.name}
-              variant={v}
-              logoFile={logoFile}
-              brandName={brand.name}
-              brandBg={brand.theme.bg}
-              headingFont={headingFont}
-              hasTransparentLogo={hasTransparentLogo}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* AI Generated Variants (if any) */}
-      {Object.keys(genVariants).length > 0 && (
-        <div>
-          <p className="section-label mb-4">Variantes Geradas</p>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {Object.entries(genVariants).map(([type, url]) => {
-              const isAI = type.endsWith('-ai')
-              const bgMap: Record<string, string> = {
-                'full-color': brand.theme.bg,
-                'full-logo-ai': brand.theme.bg,
-                'mono-white': brand.theme.bg,
-                'mono-black': '#F5F5F5',
-                'grayscale': '#FAFAFA',
-                'icon': brand.theme.bg,
-                'icon-ai': brand.theme.bg,
-              }
-              const labelMap: Record<string, string> = {
-                'full-color': 'Full Color',
-                'full-logo-ai': 'Logo (AI)',
-                'mono-white': 'Mono White',
-                'mono-black': 'Mono Black',
-                'grayscale': 'Grayscale',
-                'icon': 'Icon',
-                'icon-ai': 'Icon (AI)',
-              }
-              return (
-                <div key={type} className="card overflow-hidden">
-                  <div
-                    className="relative flex items-center justify-center p-8"
-                    style={{ backgroundColor: bgMap[type] || brand.theme.bg, minHeight: '140px' }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={url}
-                      alt={labelMap[type] || type}
-                      className="h-auto max-h-[120px] w-auto max-w-[180px]"
-                    />
-                    <span
-                      className={`absolute right-2 top-2 rounded px-1.5 py-0.5 text-[9px] font-medium backdrop-blur-sm ${
-                        isAI
-                          ? 'bg-purple-500/20 text-purple-400'
-                          : 'bg-emerald-500/20 text-emerald-400'
-                      }`}
-                    >
-                      {isAI ? 'AI Generated' : 'Processed'}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <p className="text-sm font-semibold text-[var(--text-primary)]">{labelMap[type] || type}</p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Rules & Misuse */}
       <div className="bento bento-2">

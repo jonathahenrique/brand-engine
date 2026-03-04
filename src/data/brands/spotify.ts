@@ -268,10 +268,11 @@ export const spotify: BrandConfig = {
     icon: '/logos/spotify-icon.svg',
     transparent: true,
     variants: [
-      { name: 'Full Color (Green)', type: 'full-color', description: 'Logo verde — SOMENTE sobre fundo preto ou branco puro', file: '/logos/spotify-logo-green.svg' },
-      { name: 'Black', type: 'mono-black', description: 'Logo preta para fundos claros' },
-      { name: 'White', type: 'mono-white', description: 'Logo branca para fundos escuros' },
-      { name: 'Monochrome', type: 'grayscale', description: 'Versao monocromatica para fundos que nao sao preto/branco' },
+      { name: 'Logo Horizontal', type: 'horizontal', description: 'Logo verde + wordmark — versão principal para header, docs, assinatura', file: '/logos/spotify-logo-green.svg', source: 'upload' },
+      { name: 'Logo Vertical', type: 'stacked', description: 'Ícone sobre wordmark — social media, mobile, espaços restritos' },
+      { name: 'Ícone', type: 'icon', description: 'Ondas sonoras — favicon, perfil, app icon', file: '/logos/spotify-icon.svg', source: 'upload' },
+      { name: 'Mono Claro', type: 'mono-light', description: 'Branco sobre fundos escuros' },
+      { name: 'Mono Escuro', type: 'mono-dark', description: 'Preto sobre fundos claros, impressão' },
     ],
     rules: [
       'Zona de exclusao: metade da altura do icone ao redor do logo',

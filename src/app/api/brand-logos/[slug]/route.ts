@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { existsSync } from 'fs'
 import path from 'path'
 
-const VARIANT_TYPES = ['full-color', 'icon', 'mono-white', 'mono-black', 'grayscale'] as const
+const VARIANT_TYPES = ['horizontal', 'stacked', 'icon', 'mono-light', 'mono-dark', 'icon-ai', 'stacked-ai'] as const
 
 export async function GET(
   _request: NextRequest,

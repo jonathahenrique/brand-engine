@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto'
 export interface UsageRecord {
   id: string
   timestamp: string
-  provider: 'google' | 'openai' | 'openrouter'
+  provider: 'google' | 'openai' | 'openrouter' | 'sharp'
   model: string
   operation: 'image-gen' | 'logo-gen' | 'icon-extract' | 'logo-variants'
   brandSlug: string

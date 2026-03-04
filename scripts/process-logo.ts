@@ -9,17 +9,15 @@
  * in public/logos/<slug>/
  *
  * Variants generated:
- *   full-color  — copy of the original
- *   mono-white  — all opaque pixels → #FFFFFF, alpha preserved
- *   mono-black  — all opaque pixels → #000000, alpha preserved
- *   grayscale   — luminance desaturation, alpha preserved
+ *   mono-light  — all opaque pixels → #FFFFFF, alpha preserved
+ *   mono-dark   — all opaque pixels → #000000, alpha preserved
  *   icon        — left-square crop (shield region)
  */
 
 import sharp from 'sharp'
 import * as fs from 'fs'
 import * as path from 'path'
-import { recolorPixels, grayscalePixels, extractIconCrop } from '../src/lib/logo-processing'
+import { recolorPixels, extractIconCrop } from '../src/lib/logo-processing'
 
 const BRANDS_DIR = path.resolve(__dirname, '../src/data/brands')
 const PUBLIC_DIR = path.resolve(__dirname, '../public')
@@ -98,35 +96,21 @@ async function processLogo(opts: ProcessOptions) {
   console.log(`Processing ${slug} logo from ${logoPath}...`)
   console.log(`  Info: ${metadata.width}x${metadata.height}, ${metadata.format}, hasAlpha=${metadata.hasAlpha}`)
 
-  // 1. Full-color copy
-  const fullColorOut = path.join(outDir, `full-color${ext}`)
-  if (force || !fs.existsSync(fullColorOut)) {
-    fs.copyFileSync(inputFile, fullColorOut)
-    console.log(`  full-color -> ${path.relative(PUBLIC_DIR, fullColorOut)}`)
+  // 1. Mono-light: all opaque pixels → #FFFFFF
+  const monoLightOut = path.join(outDir, 'mono-light.png')
+  if (force || !fs.existsSync(monoLightOut)) {
+    await recolorPixels(inputFile, 255, 255, 255, monoLightOut)
+    console.log(`  mono-light -> ${path.relative(PUBLIC_DIR, monoLightOut)}`)
   }
 
-  // 2. Mono-white: all opaque pixels → #FFFFFF
-  const monoWhiteOut = path.join(outDir, 'mono-white.png')
-  if (force || !fs.existsSync(monoWhiteOut)) {
-    await recolorPixels(inputFile, 255, 255, 255, monoWhiteOut)
-    console.log(`  mono-white -> ${path.relative(PUBLIC_DIR, monoWhiteOut)}`)
+  // 2. Mono-dark: all opaque pixels → #000000
+  const monoDarkOut = path.join(outDir, 'mono-dark.png')
+  if (force || !fs.existsSync(monoDarkOut)) {
+    await recolorPixels(inputFile, 0, 0, 0, monoDarkOut)
+    console.log(`  mono-dark -> ${path.relative(PUBLIC_DIR, monoDarkOut)}`)
   }
 
-  // 3. Mono-black: all opaque pixels → #000000
-  const monoBlackOut = path.join(outDir, 'mono-black.png')
-  if (force || !fs.existsSync(monoBlackOut)) {
-    await recolorPixels(inputFile, 0, 0, 0, monoBlackOut)
-    console.log(`  mono-black -> ${path.relative(PUBLIC_DIR, monoBlackOut)}`)
-  }
-
-  // 4. Grayscale: luminance desaturation, alpha preserved
-  const grayscaleOut = path.join(outDir, 'grayscale.png')
-  if (force || !fs.existsSync(grayscaleOut)) {
-    await grayscalePixels(inputFile, grayscaleOut)
-    console.log(`  grayscale -> ${path.relative(PUBLIC_DIR, grayscaleOut)}`)
-  }
-
-  // 5. Icon: left-square crop
+  // 3. Icon: left-square crop
   const iconOut = path.join(outDir, 'icon.png')
   if (force || !fs.existsSync(iconOut)) {
     await extractIconCrop(inputFile, iconOut, iconCrop)

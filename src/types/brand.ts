@@ -63,12 +63,11 @@ export interface BrandValue {
 }
 
 export type LogoVariantType =
-  | 'full-color'
-  | 'mono-white'
-  | 'mono-black'
-  | 'grayscale'
-  | 'icon'
-  | 'custom'
+  | 'horizontal'   // Logo completo horizontal (principal)
+  | 'stacked'      // Logo empilhado/vertical
+  | 'icon'         // Somente ícone/símbolo
+  | 'mono-light'   // Monocromático claro (branco) — para fundos escuros
+  | 'mono-dark'    // Monocromático escuro (preto) — para fundos claros
 
 export interface LogoVariant {
   name: string
@@ -76,7 +75,7 @@ export interface LogoVariant {
   description: string
   file?: string
   filter?: { css: string; bg: string }
-  processed?: boolean
+  source?: 'upload' | 'sharp' | 'ai'
 }
 
 export interface DosAndDonts {

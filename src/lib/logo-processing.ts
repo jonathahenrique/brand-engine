@@ -31,34 +31,6 @@ export async function recolorPixels(
 }
 
 /**
- * Alpha-aware grayscale conversion using luminance weights.
- * For each pixel: if alpha > 0, set R=G=B = 0.299R + 0.587G + 0.114B
- */
-export async function grayscalePixels(
-  inputPath: string,
-  outputPath: string,
-): Promise<void> {
-  const image = sharp(inputPath).ensureAlpha()
-  const { data, info } = await image.raw().toBuffer({ resolveWithObject: true })
-
-  const pixels = Buffer.from(data)
-  for (let i = 0; i < pixels.length; i += 4) {
-    if (pixels[i + 3] > 0) {
-      const lum = Math.round(0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2])
-      pixels[i] = lum
-      pixels[i + 1] = lum
-      pixels[i + 2] = lum
-    }
-  }
-
-  await sharp(pixels, {
-    raw: { width: info.width, height: info.height, channels: 4 },
-  })
-    .png()
-    .toFile(outputPath)
-}
-
-/**
  * Extract icon by cropping a region from the image.
  * Default: left-square crop (width = height from left side).
  */

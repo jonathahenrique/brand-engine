@@ -3,14 +3,14 @@ import { promises as fs } from 'fs'
 import { existsSync } from 'fs'
 import path from 'path'
 import { brands } from '@/data/brands'
-import { buildLogoGenerationPrompt, buildIconExtractionPrompt } from '@/utils/buildLogoPrompt'
-import { recolorPixels, grayscalePixels } from '@/lib/logo-processing'
+import { buildLogoGenerationPrompt, buildIconExtractionPrompt, buildStackedLayoutPrompt } from '@/utils/buildLogoPrompt'
+import { recolorPixels } from '@/lib/logo-processing'
 import { callGoogleImageAPI } from '@/lib/google-image'
 import { trackUsage, getModelForProvider, estimateCost } from '@/lib/usage-tracker'
 
 export const maxDuration = 120
 
-type Operation = 'process-variants' | 'extract-icon' | 'generate-full'
+type Operation = 'process-variants' | 'extract-icon' | 'generate-stacked' | 'generate-full'
 type Provider = 'openai' | 'openrouter' | 'google'
 
 interface GenerateLogoRequest {
@@ -24,6 +24,23 @@ const PUBLIC_DIR = path.join(process.cwd(), 'public')
 
 function getOutputDir(slug: string): string {
   return path.join(PUBLIC_DIR, 'logos', slug)
+}
+
+/**
+ * Retry wrapper with exponential backoff for AI API calls.
+ */
+async function withRetry<T>(fn: () => Promise<T>, maxAttempts = 3): Promise<T> {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      return await fn()
+    } catch (err) {
+      if (attempt === maxAttempts - 1) throw err
+      const delay = Math.pow(2, attempt) * 1000
+      console.warn(`Attempt ${attempt + 1} failed, retrying in ${delay}ms...`, err instanceof Error ? err.message : err)
+      await new Promise(r => setTimeout(r, delay))
+    }
+  }
+  throw new Error('Unreachable')
 }
 
 /**
@@ -66,26 +83,15 @@ async function processVariants(slug: string, sourceFile: string): Promise<Record
 
   const results: Record<string, string> = {}
 
-  // mono-white
-  const monoWhiteOut = path.join(outDir, 'mono-white.png')
-  await recolorPixels(inputFile, 255, 255, 255, monoWhiteOut)
-  results['mono-white'] = `/logos/${slug}/mono-white.png`
+  // mono-light (white)
+  const monoLightOut = path.join(outDir, 'mono-light.png')
+  await recolorPixels(inputFile, 255, 255, 255, monoLightOut)
+  results['mono-light'] = `/logos/${slug}/mono-light.png`
 
-  // mono-black
-  const monoBlackOut = path.join(outDir, 'mono-black.png')
-  await recolorPixels(inputFile, 0, 0, 0, monoBlackOut)
-  results['mono-black'] = `/logos/${slug}/mono-black.png`
-
-  // grayscale
-  const grayscaleOut = path.join(outDir, 'grayscale.png')
-  await grayscalePixels(inputFile, grayscaleOut)
-  results.grayscale = `/logos/${slug}/grayscale.png`
-
-  // full-color copy
-  const ext = path.extname(inputFile).toLowerCase()
-  const fullColorOut = path.join(outDir, `full-color${ext}`)
-  await fs.copyFile(inputFile, fullColorOut)
-  results['full-color'] = `/logos/${slug}/full-color${ext}`
+  // mono-dark (black)
+  const monoDarkOut = path.join(outDir, 'mono-dark.png')
+  await recolorPixels(inputFile, 0, 0, 0, monoDarkOut)
+  results['mono-dark'] = `/logos/${slug}/mono-dark.png`
 
   // Write manifest
   const manifest = {
@@ -317,6 +323,46 @@ async function generateLogoGoogle(prompt: string): Promise<string> {
   return `data:${result.mimeType};base64,${result.imageBase64}`
 }
 
+// ─── AI: generate-stacked ─────────────────────────────────────────
+
+async function generateStackedWithAI(
+  slug: string,
+  sourceFile: string,
+  provider: Provider,
+): Promise<string> {
+  const brand = brands[slug]
+  if (!brand) throw new Error(`Brand not found: ${slug}`)
+
+  const prompt = buildStackedLayoutPrompt(brand)
+  const inputFile = path.join(PUBLIC_DIR, sourceFile.replace(/^\//, ''))
+  if (!existsSync(inputFile)) throw new Error(`Source file not found: ${sourceFile}`)
+
+  const imageBuffer = await fs.readFile(inputFile)
+  const base64Image = imageBuffer.toString('base64')
+  const mimeType = sourceFile.endsWith('.webp') ? 'image/webp' : sourceFile.endsWith('.svg') ? 'image/svg+xml' : 'image/png'
+
+  let imageUrl: string
+
+  if (provider === 'google') {
+    const result = await callGoogleImageAPI({
+      prompt: prompt + '\n\nOutput ONLY the rearranged logo image, no text explanation.',
+      referenceImage: { base64: base64Image, mimeType },
+    })
+    imageUrl = `data:${result.mimeType};base64,${result.imageBase64}`
+  } else if (provider === 'openai') {
+    imageUrl = await extractIconOpenAI(prompt, base64Image, mimeType)
+  } else {
+    imageUrl = await extractIconOpenRouter(prompt, base64Image, mimeType)
+  }
+
+  const outDir = getOutputDir(slug)
+  await fs.mkdir(outDir, { recursive: true })
+  const stackedPath = path.join(outDir, 'stacked-ai.png')
+  await saveImage(imageUrl, stackedPath)
+
+  return `/logos/${slug}/stacked-ai.png`
+}
+
 // ─── Shared helpers ────────────────────────────────────────────────
 
 function extractImageFromOpenRouterResponse(data: Record<string, unknown>): string {
@@ -356,6 +402,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'slug is required' }, { status: 400 })
     }
 
+    // Validate slug to prevent path traversal
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      return NextResponse.json({ error: 'Invalid slug format' }, { status: 400 })
+    }
+
+    // Validate sourceFile if provided
+    if (sourceFile && (sourceFile.includes('..') || !sourceFile.startsWith('/logos/'))) {
+      return NextResponse.json({ error: 'Invalid sourceFile path' }, { status: 400 })
+    }
+
     const start = Date.now()
 
     switch (operation) {
@@ -365,8 +421,8 @@ export async function POST(request: NextRequest) {
         }
         const variants = await processVariants(slug, sourceFile)
         trackUsage({
-          provider, model: 'sharp', operation: 'logo-variants',
-          brandSlug: slug, imageCount: 4, estimatedCostUSD: 0,
+          provider: 'sharp', model: 'sharp', operation: 'logo-variants',
+          brandSlug: slug, imageCount: 2, estimatedCostUSD: 0,
           status: 'success', durationMs: Date.now() - start,
         }).catch(() => {})
         return NextResponse.json({ variants })
@@ -376,7 +432,7 @@ export async function POST(request: NextRequest) {
         if (!sourceFile) {
           return NextResponse.json({ error: 'sourceFile is required for extract-icon' }, { status: 400 })
         }
-        const iconPath = await extractIconWithAI(slug, sourceFile, provider)
+        const iconPath = await withRetry(() => extractIconWithAI(slug, sourceFile, provider))
         trackUsage({
           provider, model: getModelForProvider(provider),
           operation: 'icon-extract', brandSlug: slug, imageCount: 1,
@@ -386,8 +442,22 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ icon: iconPath })
       }
 
+      case 'generate-stacked': {
+        if (!sourceFile) {
+          return NextResponse.json({ error: 'sourceFile is required for generate-stacked' }, { status: 400 })
+        }
+        const stackedPath = await withRetry(() => generateStackedWithAI(slug, sourceFile, provider))
+        trackUsage({
+          provider, model: getModelForProvider(provider),
+          operation: 'logo-gen', brandSlug: slug, imageCount: 1,
+          estimatedCostUSD: estimateCost(provider),
+          status: 'success', durationMs: Date.now() - start,
+        }).catch(() => {})
+        return NextResponse.json({ stacked: stackedPath })
+      }
+
       case 'generate-full': {
-        const logoPath = await generateFullLogo(slug, provider)
+        const logoPath = await withRetry(() => generateFullLogo(slug, provider))
         trackUsage({
           provider, model: getModelForProvider(provider),
           operation: 'logo-gen', brandSlug: slug, imageCount: 1,
@@ -399,7 +469,7 @@ export async function POST(request: NextRequest) {
 
       default:
         return NextResponse.json(
-          { error: `Unknown operation: ${operation}. Use: process-variants, extract-icon, or generate-full` },
+          { error: `Unknown operation: ${operation}. Use: process-variants, extract-icon, generate-stacked, or generate-full` },
           { status: 400 }
         )
     }

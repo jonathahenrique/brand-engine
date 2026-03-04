@@ -271,10 +271,11 @@ export const novaNbr5419: BrandConfig = {
     icon: '/logos/nova-nbr5419/icon.png',
     transparent: true,
     variants: [
-      { name: 'Full Horizontal', type: 'full-color', description: 'Escudo + wordmark lado a lado — versão principal para hero, materiais e apresentações', file: '/logos/nova-nbr5419-logo.webp' },
-      { name: 'Shield Only', type: 'icon', description: 'Só o escudo âmbar com ícone SPDA branco — favicon, app icon, perfil de redes sociais, uso abaixo de 48px', file: '/logos/nova-nbr5419/icon.png', processed: true },
-      { name: 'Mono White', type: 'mono-white', description: 'All-white — sobre fundos sólidos roxo (#100722, #1A0F35) ou âmbar escuro', file: '/logos/nova-nbr5419/mono-white.png', processed: true },
-      { name: 'Mono Black', type: 'mono-black', description: 'All-black — sobre fundos claros, papel branco, materiais impressos', file: '/logos/nova-nbr5419/mono-black.png', processed: true },
+      { name: 'Logo Horizontal', type: 'horizontal', description: 'Escudo + wordmark lado a lado — versão principal para hero, materiais e apresentações', file: '/logos/nova-nbr5419-logo.webp', source: 'upload' },
+      { name: 'Logo Vertical', type: 'stacked', description: 'Escudo sobre wordmark — social media, mobile, espaços restritos' },
+      { name: 'Ícone', type: 'icon', description: 'Só o escudo âmbar com ícone SPDA branco — favicon, app icon, perfil', file: '/logos/nova-nbr5419/icon.png', source: 'sharp' },
+      { name: 'Mono Claro', type: 'mono-light', description: 'All-white — sobre fundos sólidos roxo (#100722, #1A0F35) ou âmbar escuro', file: '/logos/nova-nbr5419/mono-light.png', source: 'sharp' },
+      { name: 'Mono Escuro', type: 'mono-dark', description: 'All-black — sobre fundos claros, papel branco, materiais impressos', file: '/logos/nova-nbr5419/mono-dark.png', source: 'sharp' },
     ],
     rules: [
       'Clearspace mínimo de 1× a altura do escudo em todos os lados',

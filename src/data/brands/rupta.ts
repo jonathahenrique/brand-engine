@@ -247,9 +247,11 @@ export const rupta: BrandConfig = {
     file: '/logos/rupta-wordmark.svg',
     transparent: true,
     variants: [
-      { name: 'Wordmark Dark', type: 'full-color', description: 'Upper branca, lower vermelha, sobre fundo escuro', file: '/logos/rupta-wordmark.svg' },
-      { name: 'Wordmark Light', type: 'custom', description: 'Upper preta, lower vermelha, sobre fundo claro', filter: { css: 'none', bg: '#FAFAFA' } },
-      { name: 'Wordmark Mono', type: 'mono-white', description: 'Monocromatica — impressao P&B' },
+      { name: 'Logo Horizontal', type: 'horizontal', description: 'Upper branca, lower vermelha — versão principal sobre fundo escuro', file: '/logos/rupta-wordmark.svg', source: 'upload' },
+      { name: 'Logo Vertical', type: 'stacked', description: 'Wordmark empilhada — social media, mobile' },
+      { name: 'Ícone', type: 'icon', description: 'Símbolo de ruptura — favicon, perfil, app icon' },
+      { name: 'Mono Claro', type: 'mono-light', description: 'Branco total sobre fundos escuros, impressão P&B' },
+      { name: 'Mono Escuro', type: 'mono-dark', description: 'Preto total sobre fundos claros', filter: { css: 'brightness(0)', bg: '#FAFAFA' } },
     ],
     rules: [
       'Area de protecao: 1x a altura da wordmark ao redor',
