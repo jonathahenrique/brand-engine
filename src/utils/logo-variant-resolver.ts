@@ -160,15 +160,49 @@ export function resolveVariant(brand: BrandConfig, type: LogoVariantType): Resol
 }
 
 export function resolveAllVariants(brand: BrandConfig): ResolvedVariant[] {
-  return VARIANT_ORDER.map(type => resolveVariant(brand, type))
+  const { logo } = brand
+  const seen = new Set<LogoVariantType>()
+  const result: ResolvedVariant[] = []
+
+  // Resolve each configured variant (preserves order and duplicates of same type)
+  for (const v of logo.variants) {
+    seen.add(v.type)
+    const file = v.file || null
+    const isLightVariant = v.name.toLowerCase().includes('claro') || v.name.toLowerCase().includes('light')
+    const tileBg = v.type === 'mono-dark' ? '#F5F5F5'
+      : isLightVariant ? '#FFFFFF'
+      : v.type === 'horizontal' ? '#000000'
+      : brand.theme.bg
+    result.push({
+      type: v.type,
+      name: v.name,
+      description: v.description,
+      src: file,
+      cssFilter: null,
+      tileBg,
+      source: file ? (v.source || 'upload') : 'none',
+      status: file ? 'ready' : 'missing',
+      guidance: file ? null : GUIDANCE[v.type],
+    })
+  }
+
+  // Fill in any standard types not present in config
+  for (const type of VARIANT_ORDER) {
+    if (!seen.has(type)) {
+      result.push(resolveVariant(brand, type))
+    }
+  }
+
+  return result
 }
 
 export function getCompletenessScore(brand: BrandConfig): CompletenessScore {
-  const all = resolveAllVariants(brand)
+  // Score based on the 5 essential types (one per type)
+  const essentials = VARIANT_ORDER.map(type => resolveVariant(brand, type))
   return {
-    ready: all.filter(v => v.status === 'ready').length,
-    cssOnly: all.filter(v => v.status === 'css-only').length,
-    missing: all.filter(v => v.status === 'missing').length,
+    ready: essentials.filter(v => v.status === 'ready').length,
+    cssOnly: essentials.filter(v => v.status === 'css-only').length,
+    missing: essentials.filter(v => v.status === 'missing').length,
     total: 5,
   }
 }

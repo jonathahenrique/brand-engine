@@ -91,8 +91,8 @@ export default function LogoGuidelines() {
   const headingFont = brand.typography.stack.find(f => f.role === 'display')?.font || 'system-ui'
   const hasTransparentLogo = logo.transparent === true
 
-  // Variants for the bento grid (stacked, icon, mono-light, mono-dark)
-  const variantTiles = allVariants.filter(v => v.type !== 'horizontal')
+  // Variants for the bento grid (all except the first horizontal — the hero)
+  const variantTiles = allVariants.filter((v, i) => !(v.type === 'horizontal' && i === 0))
 
   // For icon in minimum size section
   const iconResolved = resolveVariant(brand, 'icon')
