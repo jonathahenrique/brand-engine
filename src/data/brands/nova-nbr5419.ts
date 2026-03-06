@@ -267,13 +267,13 @@ export const novaNbr5419: BrandConfig = {
     concept: 'Proteção pelo conhecimento — o SPDA dentro do escudo representa o domínio da norma como blindagem profissional',
     description:
       'Combinação de escudo heráldico em gradiente âmbar (#C8910E → #DDA832) com ícone branco de mastro SPDA (captador em Y, haste vertical e base de aterramento) centralizado. Wordmark flanqueado por chevrons decorativos (►► ◄◄) com linha âmbar abaixo. Cores do gradiente âmbar encaixam na paleta Alquimia Técnica.',
-    file: '/logos/nova-nbr5419-logo.webp',
-    icon: '/logos/nova-nbr5419/icon.png',
+    file: '/logos/nova-nbr5419/horizontal.png',
+    icon: '/logos/nova-nbr5419/icon-clean.png',
     transparent: true,
     variants: [
-      { name: 'Logo Horizontal', type: 'horizontal', description: 'Escudo + wordmark lado a lado — versão principal para hero, materiais e apresentações', file: '/logos/nova-nbr5419-logo.webp', source: 'upload' },
-      { name: 'Logo Vertical', type: 'stacked', description: 'Escudo sobre wordmark — social media, mobile, espaços restritos' },
-      { name: 'Ícone', type: 'icon', description: 'Só o escudo âmbar com ícone SPDA branco — favicon, app icon, perfil', file: '/logos/nova-nbr5419/icon.png', source: 'sharp' },
+      { name: 'Logo Horizontal', type: 'horizontal', description: 'Escudo + wordmark lado a lado — versão principal para hero, materiais e apresentações', file: '/logos/nova-nbr5419/horizontal.png', source: 'upload' },
+      { name: 'Logo Vertical', type: 'stacked', description: 'Escudo sobre wordmark — social media, mobile, espaços restritos', file: '/logos/nova-nbr5419/stacked.png', source: 'upload' },
+      { name: 'Ícone', type: 'icon', description: 'Só o escudo âmbar com ícone SPDA branco — favicon, app icon, perfil', file: '/logos/nova-nbr5419/icon-clean.png', source: 'upload' },
       { name: 'Mono Claro', type: 'mono-light', description: 'All-white — sobre fundos sólidos navy (#030912, #0A1628) ou âmbar escuro', file: '/logos/nova-nbr5419/mono-light.png', source: 'sharp' },
       { name: 'Mono Escuro', type: 'mono-dark', description: 'All-black — sobre fundos claros, papel branco, materiais impressos', file: '/logos/nova-nbr5419/mono-dark.png', source: 'sharp' },
     ],
