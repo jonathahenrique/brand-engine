@@ -74,6 +74,7 @@ export interface LogoVariant {
   type: LogoVariantType
   description: string
   file?: string
+  lightFile?: string
   filter?: { css: string; bg: string }
   source?: 'upload' | 'sharp' | 'ai'
 }

@@ -271,13 +271,11 @@ export const novaNbr5419: BrandConfig = {
     icon: '/logos/nova-nbr5419/icon-clean.png',
     transparent: true,
     variants: [
-      { name: 'Logo Horizontal', type: 'horizontal', description: 'Escudo + wordmark lado a lado (texto branco) — versão principal para fundos escuros, hero, apresentações', file: '/logos/nova-nbr5419/horizontal.png', source: 'upload' },
-      { name: 'Horizontal Fundo Claro', type: 'horizontal', description: 'Wordmark em preto para fundos claros — papel, impressão, backgrounds brancos', file: '/logos/nova-nbr5419/horizontal-light.png', source: 'upload' },
-      { name: 'Logo Vertical', type: 'stacked', description: 'Escudo sobre wordmark (texto branco) — social media, mobile, fundos escuros', file: '/logos/nova-nbr5419/stacked.png', source: 'upload' },
-      { name: 'Vertical Fundo Claro', type: 'stacked', description: 'Texto preto + chevrons âmbar + escudo colorido — social media, mobile, fundos claros', file: '/logos/nova-nbr5419/stacked-light.png', source: 'upload' },
+      { name: 'Logo Horizontal', type: 'horizontal', description: 'Escudo + wordmark lado a lado — versão principal para header, docs, assinatura', file: '/logos/nova-nbr5419/horizontal.png', lightFile: '/logos/nova-nbr5419/horizontal-light.png', source: 'upload' },
+      { name: 'Logo Vertical', type: 'stacked', description: 'Escudo sobre wordmark — social media, mobile, espaços quadrados', file: '/logos/nova-nbr5419/stacked.png', lightFile: '/logos/nova-nbr5419/stacked-light.png', source: 'upload' },
       { name: 'Ícone', type: 'icon', description: 'Só o escudo âmbar com ícone SPDA branco — favicon, app icon, perfil', file: '/logos/nova-nbr5419/icon-clean.png', source: 'upload' },
-      { name: 'Mono Claro', type: 'mono-light', description: 'All-white — sobre fundos sólidos navy (#030912, #0A1628) ou âmbar escuro', file: '/logos/nova-nbr5419/mono-light.png', source: 'sharp' },
-      { name: 'Mono Escuro', type: 'mono-dark', description: 'All-black — sobre fundos claros, papel branco, materiais impressos', file: '/logos/nova-nbr5419/mono-dark.png', source: 'sharp' },
+      { name: 'Mono Claro', type: 'mono-light', description: 'Versão dessaturada para fundos navy (#030912, #0A1628) ou âmbar escuro', filter: { css: 'grayscale(1) brightness(0.6)', bg: '#100722' } },
+      { name: 'Mono Escuro', type: 'mono-dark', description: 'Versão escura para fundos claros, papel branco, materiais impressos', filter: { css: 'grayscale(1) brightness(0.3)', bg: '#F5F5F5' } },
     ],
     rules: [
       'Clearspace mínimo de 1× a altura do escudo em todos os lados',

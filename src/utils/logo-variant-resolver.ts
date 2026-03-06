@@ -119,9 +119,10 @@ export function resolveVariant(brand: BrandConfig, type: LogoVariantType): Resol
       }
       // 2. CSS fallback from base logo
       if (horizontalFile) {
+        const css = variant?.filter?.css || 'brightness(0) invert(1)'
         return {
           type, name, description,
-          src: horizontalFile, cssFilter: 'brightness(0) invert(1)', tileBg: brand.theme.bg,
+          src: horizontalFile, cssFilter: css, tileBg: brand.theme.bg,
           source: 'css', status: 'css-only', guidance: null,
         }
       }
@@ -160,40 +161,14 @@ export function resolveVariant(brand: BrandConfig, type: LogoVariantType): Resol
 }
 
 export function resolveAllVariants(brand: BrandConfig): ResolvedVariant[] {
-  const { logo } = brand
-  const seen = new Set<LogoVariantType>()
-  const result: ResolvedVariant[] = []
+  // One variant per type, consistent with Essential Brand Kit pattern.
+  // CSS fallback for mono is handled by resolveVariant().
+  return VARIANT_ORDER.map(type => resolveVariant(brand, type))
+}
 
-  // Resolve each configured variant (preserves order and duplicates of same type)
-  for (const v of logo.variants) {
-    seen.add(v.type)
-    const file = v.file || null
-    const isLightVariant = v.name.toLowerCase().includes('claro') || v.name.toLowerCase().includes('light')
-    const tileBg = v.type === 'mono-dark' ? '#F5F5F5'
-      : isLightVariant ? '#FFFFFF'
-      : v.type === 'horizontal' ? '#000000'
-      : brand.theme.bg
-    result.push({
-      type: v.type,
-      name: v.name,
-      description: v.description,
-      src: file,
-      cssFilter: null,
-      tileBg,
-      source: file ? (v.source || 'upload') : 'none',
-      status: file ? 'ready' : 'missing',
-      guidance: file ? null : GUIDANCE[v.type],
-    })
-  }
-
-  // Fill in any standard types not present in config
-  for (const type of VARIANT_ORDER) {
-    if (!seen.has(type)) {
-      result.push(resolveVariant(brand, type))
-    }
-  }
-
-  return result
+export function resolveLightFile(brand: BrandConfig, type: LogoVariantType): string | null {
+  const variant = brand.logo.variants.find(v => v.type === type)
+  return variant?.lightFile || null
 }
 
 export function getCompletenessScore(brand: BrandConfig): CompletenessScore {

@@ -5,6 +5,7 @@ import { useBrand } from '@/context/BrandContext'
 import {
   resolveVariant,
   resolveAllVariants,
+  resolveLightFile,
   getCompletenessScore,
   getSourceLabel,
 } from '@/utils/logo-variant-resolver'
@@ -18,9 +19,9 @@ function VariantTile({ resolved, brandName, headingFont }: {
   const sourceLabel = getSourceLabel(resolved.source)
 
   return (
-    <div className="card overflow-hidden">
+    <div className="card flex flex-col overflow-hidden">
       <div
-        className="relative flex items-center justify-center p-8"
+        className="relative flex flex-1 items-center justify-center p-8"
         style={{ backgroundColor: resolved.tileBg, minHeight: '180px' }}
       >
         {resolved.status === 'ready' && resolved.src && (
@@ -88,18 +89,14 @@ export default function LogoGuidelines() {
   const allVariants = resolveAllVariants(brand)
   const completeness = getCompletenessScore(brand)
 
-  // Light-bg horizontal for hero preview (fallback to primary horizontal)
-  const horizontalLight = allVariants.find(
-    v => v.type === 'horizontal' && v.name.toLowerCase().includes('claro')
-  ) || allVariants.find(
-    v => v.type === 'horizontal' && v.name.toLowerCase().includes('light')
-  ) || horizontal
+  // Light-bg horizontal via lightFile (fallback: CSS brightness(0) on primary)
+  const horizontalLightFile = resolveLightFile(brand, 'horizontal')
 
   const headingFont = brand.typography.stack.find(f => f.role === 'display')?.font || 'system-ui'
   const hasTransparentLogo = logo.transparent === true
 
-  // Variants for the bento grid (all except the first horizontal — the hero)
-  const variantTiles = allVariants.filter((v, i) => !(v.type === 'horizontal' && i === 0))
+  // Variants for the bento grid (all except horizontal — shown in Logo Principal)
+  const variantTiles = allVariants.filter(v => v.type !== 'horizontal')
 
   // For icon in minimum size section
   const iconResolved = resolveVariant(brand, 'icon')
@@ -160,14 +157,22 @@ export default function LogoGuidelines() {
             className="card flex items-center justify-center overflow-hidden p-12"
             style={{ backgroundColor: '#FFFFFF', minHeight: '260px' }}
           >
-            {horizontalLight.src ? (
+            {horizontalLightFile ? (
               <Image
-                src={horizontalLight.src}
+                src={horizontalLightFile}
                 alt={`${brand.name} logo on light`}
                 width={280}
                 height={100}
                 className="h-auto w-[280px]"
-                style={horizontalLight.cssFilter ? { filter: horizontalLight.cssFilter } : undefined}
+              />
+            ) : horizontal.src ? (
+              <Image
+                src={horizontal.src}
+                alt={`${brand.name} logo on light`}
+                width={280}
+                height={100}
+                className="h-auto w-[280px]"
+                style={{ filter: 'brightness(0)' }}
               />
             ) : (
               <div className="flex flex-col items-center gap-3 text-center">
@@ -265,12 +270,12 @@ export default function LogoGuidelines() {
                   <span className="text-[9px] font-medium text-blue-400">x</span>
                 </div>
                 <Image
-                  src={horizontal.src}
+                  src={horizontalLightFile || horizontal.src!}
                   alt={`${brand.name} clearspace`}
                   width={200}
                   height={70}
                   className="h-auto w-[200px]"
-                  style={hasTransparentLogo ? undefined : { filter: 'brightness(0)' }}
+                  style={horizontalLightFile ? undefined : { filter: 'brightness(0)' }}
                 />
               </div>
             </div>
@@ -296,12 +301,12 @@ export default function LogoGuidelines() {
             <div className="flex flex-col items-center gap-3">
               {horizontal.src ? (
                 <Image
-                  src={horizontal.src}
+                  src={horizontalLightFile || horizontal.src}
                   alt="Logo minimo"
                   width={70}
                   height={24}
                   className="h-auto w-[70px]"
-                  style={hasTransparentLogo ? undefined : { filter: 'brightness(0)' }}
+                  style={horizontalLightFile ? undefined : { filter: 'brightness(0)' }}
                 />
               ) : (
                 <p
@@ -356,12 +361,12 @@ export default function LogoGuidelines() {
             <div className="flex flex-col items-center gap-3">
               {horizontal.src ? (
                 <Image
-                  src={horizontal.src}
+                  src={horizontalLightFile || horizontal.src}
                   alt="Logo impresso minimo"
                   width={100}
                   height={35}
                   className="h-auto w-[100px]"
-                  style={hasTransparentLogo ? undefined : { filter: 'brightness(0)' }}
+                  style={horizontalLightFile ? undefined : { filter: 'brightness(0)' }}
                 />
               ) : (
                 <p
