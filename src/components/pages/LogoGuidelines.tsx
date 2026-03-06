@@ -88,6 +88,13 @@ export default function LogoGuidelines() {
   const allVariants = resolveAllVariants(brand)
   const completeness = getCompletenessScore(brand)
 
+  // Light-bg horizontal for hero preview (fallback to primary horizontal)
+  const horizontalLight = allVariants.find(
+    v => v.type === 'horizontal' && v.name.toLowerCase().includes('claro')
+  ) || allVariants.find(
+    v => v.type === 'horizontal' && v.name.toLowerCase().includes('light')
+  ) || horizontal
+
   const headingFont = brand.typography.stack.find(f => f.role === 'display')?.font || 'system-ui'
   const hasTransparentLogo = logo.transparent === true
 
@@ -151,16 +158,16 @@ export default function LogoGuidelines() {
           {/* Full color on light */}
           <div
             className="card flex items-center justify-center overflow-hidden p-12"
-            style={{ backgroundColor: hasTransparentLogo ? '#E8E8E8' : '#FFFFFF', minHeight: '260px' }}
+            style={{ backgroundColor: '#FFFFFF', minHeight: '260px' }}
           >
-            {horizontal.src ? (
+            {horizontalLight.src ? (
               <Image
-                src={horizontal.src}
+                src={horizontalLight.src}
                 alt={`${brand.name} logo on light`}
                 width={280}
                 height={100}
                 className="h-auto w-[280px]"
-                style={horizontal.cssFilter ? { filter: horizontal.cssFilter } : undefined}
+                style={horizontalLight.cssFilter ? { filter: horizontalLight.cssFilter } : undefined}
               />
             ) : (
               <div className="flex flex-col items-center gap-3 text-center">
@@ -186,9 +193,9 @@ export default function LogoGuidelines() {
       <div>
         <p className="section-label mb-4">Variantes</p>
         <div className="bento bento-2 lg:grid-cols-4">
-          {variantTiles.map(v => (
+          {variantTiles.map((v, i) => (
             <VariantTile
-              key={v.type}
+              key={`${v.type}-${i}`}
               resolved={v}
               brandName={brand.name}
               headingFont={headingFont}
