@@ -38,6 +38,21 @@ export function BrandLogo({ slug, name, logoFile, iconFile, transparent, variant
     )
   }
 
+  if (variant === 'icon') {
+    const src = iconFile || logoFile
+    if (src) {
+      return (
+        <Image
+          src={src}
+          alt={name}
+          width={100}
+          height={100}
+          className={className || 'h-auto max-h-[100px] w-auto max-w-[100px]'}
+        />
+      )
+    }
+  }
+
   if (variant === 'full' && logoFile) {
     return (
       <Image

@@ -244,6 +244,7 @@ export const rupta: BrandConfig = {
     concept: 'The Displacement',
     description:
       'A palavra "RUPTA" E o logo. Duas camadas de texto sobrepostas, divididas por clipPath horizontal. Metade superior branca deslocada 3px a direita. Metade inferior Ruptura Red deslocada 4px abaixo.',
+    // NOTE: rupta-wordmark.svg não existe no disco ainda — text fallback ativo
     file: '/logos/rupta-wordmark.svg',
     transparent: true,
     variants: [

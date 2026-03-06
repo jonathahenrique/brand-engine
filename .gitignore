@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Reference images (local only)
 .refs/
+
+# Runtime data
+/data/
