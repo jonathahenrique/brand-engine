@@ -353,4 +353,5 @@ export const novaNbr5419: BrandConfig = {
   createdAt: '2026-03-04',
   updatedAt: '2026-03-06',
   completeness: 95,
+  status: 'draft',
 }

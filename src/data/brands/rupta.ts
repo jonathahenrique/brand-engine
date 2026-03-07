@@ -314,4 +314,5 @@ export const rupta: BrandConfig = {
   createdAt: '2026-03-03',
   updatedAt: '2026-03-03',
   completeness: 95,
+  status: 'draft',
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useBrand } from '@/context/BrandContext'
 import { BrandLogo } from '@/components/ui/BrandLogo'
 
@@ -75,6 +76,8 @@ function CircularProgress({ value, color }: { value: number; color: string }) {
 
 export default function BrandOverview() {
   const { brand } = useBrand()
+  const [status, setStatus] = useState<'draft' | 'published'>(brand.status || 'draft')
+  const [publishedAt, setPublishedAt] = useState<string | undefined>(brand.publishedAt)
   const colorsCount = brand.colors.dark.length + brand.colors.light.length
   const fontsCount = brand.typography.stack.length
   const tokensCount =
@@ -102,6 +105,13 @@ export default function BrandOverview() {
               <span className="rounded-full bg-white/20 px-3 py-0.5 text-[11px] font-medium text-white/80">
                 {brand.personality.archetype}
               </span>
+              <span className={`rounded-full px-3 py-0.5 text-[11px] font-medium ${
+                status === 'published'
+                  ? 'bg-green-500/30 text-green-200'
+                  : 'bg-yellow-500/30 text-yellow-200'
+              }`}>
+                {status === 'published' ? 'Publicada' : 'Rascunho'}
+              </span>
             </div>
             <BrandLogo
               slug={brand.slug}
@@ -114,6 +124,40 @@ export default function BrandOverview() {
               className="h-20 w-auto"
             />
             <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/80">{brand.tagline}</p>
+            <div className="mt-4 flex items-center gap-3">
+              {status !== 'published' && (
+                <button
+                  disabled={brand.completeness < 80}
+                  onClick={() => {
+                    if (!confirm('Publicar esta marca para uso no Social Media?')) return
+                    const now = new Date().toISOString()
+                    setStatus('published')
+                    setPublishedAt(now)
+                  }}
+                  className="rounded-lg bg-white/20 px-4 py-1.5 text-xs font-medium text-white transition hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-40"
+                  title={brand.completeness < 80
+                    ? `Completeness ${brand.completeness}% — mínimo 80% para publicar`
+                    : 'Publicar marca para uso no Social Media'}
+                >
+                  Publicar para Social Media
+                </button>
+              )}
+              {status === 'published' && publishedAt && (
+                <span className="text-[11px] text-white/60">
+                  Publicada em {new Date(publishedAt).toLocaleDateString('pt-BR')}
+                </span>
+              )}
+            </div>
+            {status === 'published' && (
+              <div className="mt-3 rounded-lg bg-black/20 p-3">
+                <p className="text-[11px] text-white/60">
+                  Para importar no design-social-media:
+                </p>
+                <code className="mt-1 block text-[10px] text-white/80">
+                  POST /api/brands/import {`{ "url": "${typeof window !== 'undefined' ? window.location.origin : ''}/api/brand-package/${brand.slug}" }`}
+                </code>
+              </div>
+            )}
           </div>
         </div>
 

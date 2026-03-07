@@ -312,4 +312,6 @@ export interface BrandConfig {
   createdAt: string
   updatedAt: string
   completeness: number
+  status?: 'draft' | 'published'
+  publishedAt?: string
 }

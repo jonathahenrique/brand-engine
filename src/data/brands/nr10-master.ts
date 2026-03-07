@@ -325,4 +325,5 @@ export const nr10Master: BrandConfig = {
   createdAt: '2026-03-03',
   updatedAt: '2026-03-03',
   completeness: 90,
+  status: 'draft',
 }

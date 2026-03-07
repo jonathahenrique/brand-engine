@@ -67,6 +67,8 @@ export async function GET(
     const brandPackage = {
       exportedAt: new Date().toISOString(),
       brand,
+      status: brand.status || 'draft',
+      completeness: brand.completeness,
       assets: {
         logos: logoFiles,
         generated: generatedImages,
