@@ -13,6 +13,7 @@ import {
   Loader2,
   AlertCircle,
   ImageIcon,
+  RefreshCw,
 } from 'lucide-react'
 
 type Provider = 'openrouter' | 'openai' | 'google'
@@ -313,72 +314,79 @@ export default function SocialMedia() {
         </div>
       </div>
 
-      {/* Painel de Geração — só aparece quando faltam imagens */}
-      {!hasImages && (
-        <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-5">
-          <div className="flex flex-wrap items-center gap-3">
+      {/* Painel de Geração */}
+      <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-5">
+        <div className="flex flex-wrap items-center gap-3">
+          {hasImages ? (
+            <RefreshCw size={18} className="text-[var(--text-secondary)]" />
+          ) : (
             <Sparkles size={18} className="text-[var(--text-secondary)]" />
-
-            <select
-              value={provider}
-              onChange={(e) => setProvider(e.target.value as Provider)}
-              disabled={generating}
-              className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-primary)] disabled:opacity-50"
-            >
-              <option value="google">Google — Nano Banana 2 (créditos gratuitos)</option>
-              <option value="openai">OpenAI — GPT Image 1 (~$0.12 total)</option>
-              <option value="openrouter">OpenRouter — Gemini 2.5 Flash</option>
-            </select>
-
-            <button
-              onClick={generateAll}
-              disabled={generating}
-              className="flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
-              style={{ backgroundColor: brand.theme.primary }}
-            >
-              {generating ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  Gerando... ({progress.done}/{progress.total})
-                </>
-              ) : (
-                <>
-                  <Sparkles size={16} />
-                  Gerar Artes com IA
-                </>
-              )}
-            </button>
-          </div>
-
-          {generating && (
-            <div className="mt-3">
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-muted)]">
-                <div
-                  className="h-full rounded-full transition-all duration-500"
-                  style={{
-                    width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
-                    backgroundColor: brand.theme.primary,
-                  }}
-                />
-              </div>
-            </div>
           )}
 
-          {errors.length > 0 && (
-            <div className="mt-3 space-y-1">
-              {errors.map((err, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 rounded-md bg-red-500/10 px-3 py-1.5 text-xs text-red-400"
-                >
-                  <AlertCircle size={12} />
-                  {err}
-                </div>
-              ))}
-            </div>
-          )}
+          <select
+            value={provider}
+            onChange={(e) => setProvider(e.target.value as Provider)}
+            disabled={generating}
+            className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-primary)] disabled:opacity-50"
+          >
+            <option value="google">Google — Nano Banana 2 (créditos gratuitos)</option>
+            <option value="openai">OpenAI — GPT Image 1 (~$0.12 total)</option>
+            <option value="openrouter">OpenRouter — Gemini 2.5 Flash</option>
+          </select>
+
+          <button
+            onClick={generateAll}
+            disabled={generating}
+            className="flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+            style={{ backgroundColor: brand.theme.primary }}
+          >
+            {generating ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                Gerando... ({progress.done}/{progress.total})
+              </>
+            ) : hasImages ? (
+              <>
+                <RefreshCw size={16} />
+                Regenerar Artes
+              </>
+            ) : (
+              <>
+                <Sparkles size={16} />
+                Gerar Artes com IA
+              </>
+            )}
+          </button>
         </div>
-      )}
+
+        {generating && (
+          <div className="mt-3">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-muted)]">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
+                  backgroundColor: brand.theme.primary,
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {errors.length > 0 && (
+          <div className="mt-3 space-y-1">
+            {errors.map((err, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 rounded-md bg-red-500/10 px-3 py-1.5 text-xs text-red-400"
+              >
+                <AlertCircle size={12} />
+                {err}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Grid 4 Formatos */}
       <div className="flex items-start gap-5 overflow-x-auto pb-2">

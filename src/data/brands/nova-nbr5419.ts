@@ -319,7 +319,18 @@ export const novaNbr5419: BrandConfig = {
   },
 
   mockups: {
-    instagramPosts: [],
+    instagramPosts: [
+      {
+        headline: 'NBR 5419:2026 — O que mudou e como aplicar agora',
+        body: 'A norma foi atualizada. Seus projetos de SPDA estão em conformidade? Aprenda com os autores da norma — Coordenador e Secretário da Comissão ABNT.',
+        type: 'tip',
+      },
+      {
+        headline: 'Assine sua ART com segurança técnica e jurídica',
+        body: '4 módulos práticos com Jobson Modena e Hélio Sueta. Certificado de extensão universitária. Turma Fundadora com condições exclusivas.',
+        type: 'cta',
+      },
+    ],
     youtubeThumbnails: [],
     newsletter: {
       subject: 'A norma que entrou em vigor agora — você já sabe o que mudou?',
