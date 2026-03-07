@@ -15,7 +15,6 @@ import {
   Zap,
   Layers,
   Share2,
-  BarChart3,
   ChevronLeft,
   Menu,
   X,
@@ -30,7 +29,6 @@ const navItems = [
   { label: 'Motion', href: '/motion', icon: Zap },
   { label: 'Tokens', href: '/tokens', icon: Layers },
   { label: 'Social Media', href: '/social-media', icon: Share2 },
-  { label: 'Usage', href: '/usage', icon: BarChart3 },
 ]
 
 export default function Sidebar() {
@@ -50,12 +48,12 @@ export default function Sidebar() {
             logoFile={brand.logo.file || brand.logo.variants.find(v => v.file)?.file}
             iconFile={brand.logo.icon}
             transparent={brand.logo.transparent}
-            variant="badge"
+            variant="icon"
             theme={brand.theme}
-            className="h-10 w-10"
+            className="h-10 w-10 shrink-0 object-contain"
           />
-          <div>
-            <p className="text-sm font-semibold text-[var(--text-primary)]">{brand.name}</p>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-[var(--text-primary)]">{brand.name}</p>
             <p className="text-[11px] text-[var(--text-ghost)]">Brand System</p>
           </div>
         </div>

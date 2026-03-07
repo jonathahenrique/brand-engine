@@ -84,7 +84,7 @@ body {
 /* ── Bento Grid System ── */
 .bento {
   display: grid;
-  gap: 20px;
+  gap: 14px;
 }
 
 .bento-4 {

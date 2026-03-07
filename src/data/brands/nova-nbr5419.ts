@@ -274,8 +274,8 @@ export const novaNbr5419: BrandConfig = {
       { name: 'Logo Horizontal', type: 'horizontal', description: 'Escudo + wordmark lado a lado — versão principal para header, docs, assinatura', file: '/logos/nova-nbr5419/horizontal.png', lightFile: '/logos/nova-nbr5419/horizontal-light.png', source: 'upload' },
       { name: 'Logo Vertical', type: 'stacked', description: 'Escudo sobre wordmark — social media, mobile, espaços quadrados', file: '/logos/nova-nbr5419/stacked.png', lightFile: '/logos/nova-nbr5419/stacked-light.png', source: 'upload' },
       { name: 'Ícone', type: 'icon', description: 'Só o escudo âmbar com ícone SPDA branco — favicon, app icon, perfil', file: '/logos/nova-nbr5419/icon-clean.png', source: 'upload' },
-      { name: 'Mono Claro', type: 'mono-light', description: 'Versão dessaturada para fundos navy (#030912, #0A1628) ou âmbar escuro', filter: { css: 'grayscale(1) brightness(0.6)', bg: '#100722' } },
-      { name: 'Mono Escuro', type: 'mono-dark', description: 'Versão escura para fundos claros, papel branco, materiais impressos', filter: { css: 'grayscale(1) brightness(0.3)', bg: '#F5F5F5' } },
+      { name: 'Mono Claro', type: 'mono-light', description: 'All-white — sobre fundos navy (#030912, #0A1628) ou âmbar escuro', file: '/logos/nova-nbr5419/mono-light.png', source: 'upload' },
+      { name: 'Mono Escuro', type: 'mono-dark', description: 'All-black — sobre fundos claros, papel branco, materiais impressos', file: '/logos/nova-nbr5419/mono-dark.png', source: 'upload' },
     ],
     rules: [
       'Clearspace mínimo de 1× a altura do escudo em todos os lados',
@@ -340,6 +340,6 @@ export const novaNbr5419: BrandConfig = {
   },
 
   createdAt: '2026-03-04',
-  updatedAt: '2026-03-04',
+  updatedAt: '2026-03-06',
   completeness: 95,
 }

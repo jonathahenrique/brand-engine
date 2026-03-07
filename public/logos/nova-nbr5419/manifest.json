@@ -1,12 +1,15 @@
 {
   "slug": "nova-nbr5419",
   "source": "/logos/nova-nbr5419/horizontal.png",
-  "processedAt": "2026-03-06T18:00:00.000Z",
+  "processedAt": "2026-03-06T21:30:00.000Z",
   "variants": [
     "/logos/nova-nbr5419/horizontal.png",
     "/logos/nova-nbr5419/horizontal-light.png",
     "/logos/nova-nbr5419/stacked.png",
     "/logos/nova-nbr5419/stacked-light.png",
-    "/logos/nova-nbr5419/icon-clean.png"
+    "/logos/nova-nbr5419/icon.png",
+    "/logos/nova-nbr5419/icon-light.png",
+    "/logos/nova-nbr5419/mono-light.png",
+    "/logos/nova-nbr5419/mono-dark.png"
   ]
 }
