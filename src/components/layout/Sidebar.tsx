@@ -33,7 +33,7 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const { brand } = useBrand()
+  const { brand, accent } = useBrand()
   const base = `/brands/${brand.slug}`
   const [open, setOpen] = useState(false)
 
@@ -86,20 +86,20 @@ export default function Sidebar() {
                   }`}
                   style={
                     isActive
-                      ? { backgroundColor: `${brand.theme.primary}08`, color: brand.theme.primary }
+                      ? { backgroundColor: `${accent}08`, color: accent }
                       : undefined
                   }
                 >
                   {isActive && (
                     <span
                       className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full"
-                      style={{ backgroundColor: brand.theme.primary }}
+                      style={{ backgroundColor: accent }}
                     />
                   )}
                   <item.icon
                     size={16}
                     className={isActive ? '' : 'text-[var(--text-ghost)] group-hover:text-[var(--text-secondary)]'}
-                    style={isActive ? { color: brand.theme.primary } : undefined}
+                    style={isActive ? { color: accent } : undefined}
                   />
                   {item.label}
                 </Link>

@@ -39,7 +39,7 @@ function ContrastBadge({ fg, bg }: { fg: string; bg: string }) {
 }
 
 export default function ColorExplorer() {
-  const { brand } = useBrand()
+  const { brand, accent } = useBrand()
   const [mode, setMode] = useState<'dark' | 'light'>('dark')
   const colors = mode === 'dark' ? brand.colors.dark : brand.colors.light
 
@@ -165,30 +165,58 @@ export default function ColorExplorer() {
         </div>
       </div>
 
-      {/* Contrast Checker */}
+      {/* Contrast Checker — Light Mode */}
       <div className="card p-6">
-        <p className="section-label mb-4">Verificação de Contraste</p>
+        <p className="section-label mb-4">Contraste — Light Mode</p>
         <div className="grid grid-cols-2 gap-4">
           <div
             className="flex items-center justify-center rounded-xl p-6"
-            style={{ backgroundColor: brand.theme.bg }}
+            style={{ backgroundColor: '#F8F9FC' }}
           >
             <span
               className="text-3xl font-bold"
-              style={{ color: brand.theme.primary }}
+              style={{ color: brand.theme.accent || brand.theme.primary }}
             >
               Aa
             </span>
           </div>
           <div className="flex flex-col justify-center space-y-2">
             <p className="text-sm text-[var(--text-muted)]">
-              <span className="font-semibold">Primary sobre BG:</span>
+              <span className="font-semibold">Accent sobre Page:</span>
             </p>
-            <ContrastBadge fg={brand.theme.primary} bg={brand.theme.bg} />
+            <ContrastBadge fg={brand.theme.accent || brand.theme.primary} bg="#F8F9FC" />
             <p className="text-sm text-[var(--text-muted)]">
-              <span className="font-semibold">Text sobre BG:</span>
+              <span className="font-semibold">Accent sobre Card:</span>
             </p>
-            <ContrastBadge fg={brand.theme.text} bg={brand.theme.bg} />
+            <ContrastBadge fg={brand.theme.accent || brand.theme.primary} bg="#FFFFFF" />
+          </div>
+        </div>
+      </div>
+
+      {/* Contrast Checker — Dark Mode */}
+      <div className="card p-6">
+        <p className="section-label mb-4">Contraste — Dark Mode</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div
+            className="flex items-center justify-center rounded-xl p-6"
+            style={{ backgroundColor: '#0F1117' }}
+          >
+            <span
+              className="text-3xl font-bold"
+              style={{ color: brand.theme.accentOnDark || brand.theme.accent || brand.theme.primary }}
+            >
+              Aa
+            </span>
+          </div>
+          <div className="flex flex-col justify-center space-y-2">
+            <p className="text-sm text-[var(--text-muted)]">
+              <span className="font-semibold">Accent sobre Page:</span>
+            </p>
+            <ContrastBadge fg={brand.theme.accentOnDark || brand.theme.accent || brand.theme.primary} bg="#0F1117" />
+            <p className="text-sm text-[var(--text-muted)]">
+              <span className="font-semibold">Accent sobre Card:</span>
+            </p>
+            <ContrastBadge fg={brand.theme.accentOnDark || brand.theme.accent || brand.theme.primary} bg="#1C1E26" />
           </div>
         </div>
       </div>

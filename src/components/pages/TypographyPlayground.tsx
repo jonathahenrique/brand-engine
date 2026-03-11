@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useBrand } from '@/context/BrandContext'
 
 export default function TypographyPlayground() {
-  const { brand, tokens } = useBrand()
+  const { brand, tokens, accent } = useBrand()
   const [preview, setPreview] = useState('The quick brown fox jumps over the lazy dog')
 
   const headingFont = brand.typography.stack.find(f => f.role === 'display')
@@ -40,8 +40,8 @@ export default function TypographyPlayground() {
               <span
                 className="rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
                 style={{
-                  backgroundColor: brand.theme.primary + '12',
-                  color: brand.theme.primary,
+                  backgroundColor: accent + '12',
+                  color: accent,
                 }}
               >
                 {font!.role}

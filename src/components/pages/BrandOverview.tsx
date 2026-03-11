@@ -75,7 +75,7 @@ function CircularProgress({ value, color }: { value: number; color: string }) {
 }
 
 export default function BrandOverview() {
-  const { brand } = useBrand()
+  const { brand, accent } = useBrand()
   const [status, setStatus] = useState<'draft' | 'published'>(brand.status || 'draft')
   const [publishedAt, setPublishedAt] = useState<string | undefined>(brand.publishedAt)
   const colorsCount = brand.colors.dark.length + brand.colors.light.length
@@ -163,7 +163,7 @@ export default function BrandOverview() {
 
         {/* Completude */}
         <div className="card flex flex-col items-center justify-center p-5">
-          <CircularProgress value={brand.completeness} color={brand.theme.primary} />
+          <CircularProgress value={brand.completeness} color={accent} />
           <p className="mt-2 text-2xl font-bold text-[var(--text-primary)]">{brand.completeness}%</p>
           <p className="section-label mt-1">Completude</p>
         </div>
@@ -175,27 +175,27 @@ export default function BrandOverview() {
           label="Cores"
           value={colorsCount}
           sparkValues={[3, 5, 4, 7, 6]}
-          color={brand.theme.primary}
+          color={accent}
           trend={`${brand.colors.dark.length} dark · ${brand.colors.light.length} light`}
         />
         <KpiCard
           label="Fontes"
           value={fontsCount}
           sparkValues={[4, 6, 5, 7, 8]}
-          color={brand.theme.primary}
+          color={accent}
           trend={brand.typography.stack.map(f => f.font).join(' · ')}
         />
         <KpiCard
           label="Tokens"
           value={tokensCount}
           sparkValues={[2, 4, 6, 5, 8]}
-          color={brand.theme.primary}
+          color={accent}
         />
         <KpiCard
           label="Motion"
           value={motionCount}
           sparkValues={[3, 2, 5, 4, 6]}
-          color={brand.theme.primary}
+          color={accent}
           trend={brand.motion.profile}
         />
       </div>
@@ -277,8 +277,8 @@ export default function BrandOverview() {
           <span
             className="inline-block rounded-lg px-2.5 py-0.5 text-xs font-semibold"
             style={{
-              backgroundColor: `${brand.theme.primary}12`,
-              color: brand.theme.primary,
+              backgroundColor: `${accent}12`,
+              color: accent,
             }}
           >
             {brand.personality.archetype}
@@ -300,7 +300,7 @@ export default function BrandOverview() {
               <li key={v.title} className="flex items-start gap-2">
                 <span
                   className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-bold text-white"
-                  style={{ backgroundColor: brand.theme.primary }}
+                  style={{ backgroundColor: accent }}
                 >
                   {i + 1}
                 </span>
@@ -328,8 +328,8 @@ export default function BrandOverview() {
           <span
             className="mt-2 inline-block rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
             style={{
-              backgroundColor: `${brand.theme.primary}12`,
-              color: brand.theme.primary,
+              backgroundColor: `${accent}12`,
+              color: accent,
             }}
           >
             {brand.motion.profile}

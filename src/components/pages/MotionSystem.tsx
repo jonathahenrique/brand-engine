@@ -3,7 +3,7 @@
 import { useBrand } from '@/context/BrandContext'
 
 export default function MotionSystem() {
-  const { brand } = useBrand()
+  const { brand, accent } = useBrand()
   const { motion } = brand
 
   return (
@@ -18,7 +18,7 @@ export default function MotionSystem() {
       {/* Principle */}
       <div
         className="card border-l-[3px] p-6"
-        style={{ borderLeftColor: brand.theme.primary }}
+        style={{ borderLeftColor: accent }}
       >
         <p className="section-label mb-2">Princípio</p>
         <p className="text-xl font-bold text-[var(--text-primary)]">{motion.principle}</p>
@@ -26,8 +26,8 @@ export default function MotionSystem() {
         <span
           className="mt-3 inline-block rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider"
           style={{
-            backgroundColor: brand.theme.primary + '12',
-            color: brand.theme.primary,
+            backgroundColor: accent + '12',
+            color: accent,
           }}
         >
           Profile: {motion.profile}
@@ -45,8 +45,8 @@ export default function MotionSystem() {
                 <span
                   className="rounded-md px-2 py-0.5 font-mono text-[10px] font-semibold"
                   style={{
-                    backgroundColor: brand.theme.primary + '12',
-                    color: brand.theme.primary,
+                    backgroundColor: accent + '12',
+                    color: accent,
                   }}
                 >
                   {t.value}
@@ -79,7 +79,7 @@ export default function MotionSystem() {
                 <div
                   className="h-full w-0 rounded-full group-hover:w-full"
                   style={{
-                    backgroundColor: brand.theme.primary,
+                    backgroundColor: accent,
                     transitionProperty: 'width',
                     transitionDuration: /^\d/.test(a.duration) ? a.duration : '300ms',
                     transitionTimingFunction: a.easing || 'ease-out',
@@ -98,7 +98,7 @@ export default function MotionSystem() {
           <ul className="space-y-2">
             {motion.rules.map((r) => (
               <li key={r} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: brand.theme.primary }} />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: accent }} />
                 {r}
               </li>
             ))}

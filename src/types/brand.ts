@@ -234,6 +234,8 @@ export interface BrandConfig {
     textTertiary: string
     border: string
     borderSubtle: string
+    accent?: string
+    accentOnDark?: string
   }
 
   colors: {

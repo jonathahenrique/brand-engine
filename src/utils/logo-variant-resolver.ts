@@ -113,7 +113,7 @@ export function resolveVariant(brand: BrandConfig, type: LogoVariantType): Resol
       if (variant?.file) {
         return {
           type, name, description,
-          src: variant.file, cssFilter: null, tileBg: brand.theme.bg,
+          src: variant.file, cssFilter: null, tileBg: '#000000',
           source: variant.source || 'upload', status: 'ready', guidance: null,
         }
       }
@@ -122,13 +122,13 @@ export function resolveVariant(brand: BrandConfig, type: LogoVariantType): Resol
         const css = variant?.filter?.css || 'brightness(0) invert(1)'
         return {
           type, name, description,
-          src: horizontalFile, cssFilter: css, tileBg: brand.theme.bg,
+          src: horizontalFile, cssFilter: css, tileBg: '#000000',
           source: 'css', status: 'css-only', guidance: null,
         }
       }
       return {
         type, name, description,
-        src: null, cssFilter: null, tileBg: brand.theme.bg,
+        src: null, cssFilter: null, tileBg: '#000000',
         source: 'none', status: 'missing', guidance: GUIDANCE['mono-light'],
       }
     }

@@ -29,7 +29,7 @@ const tabs: { key: Tab; label: string }[] = [
 ]
 
 export default function TokenBrowser() {
-  const { brand, tokens } = useBrand()
+  const { brand, tokens, accent } = useBrand()
   const [tab, setTab] = useState<Tab>('cores')
 
   return (
@@ -104,7 +104,7 @@ export default function TokenBrowser() {
                     className="h-5 rounded"
                     style={{
                       width: `${Math.min(s.px * 2, 100)}%`,
-                      backgroundColor: brand.theme.primary + '20',
+                      backgroundColor: accent + '20',
                     }}
                   />
                 </div>

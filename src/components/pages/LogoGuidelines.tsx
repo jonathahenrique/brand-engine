@@ -82,7 +82,7 @@ function VariantTile({ resolved, brandName, headingFont }: {
 }
 
 export default function LogoGuidelines() {
-  const { brand } = useBrand()
+  const { brand, accent } = useBrand()
   const { logo } = brand
 
   const horizontal = resolveVariant(brand, 'horizontal')
@@ -113,7 +113,7 @@ export default function LogoGuidelines() {
       {/* Concept */}
       <div
         className="card border-l-[3px] p-6"
-        style={{ borderLeftColor: brand.theme.primary }}
+        style={{ borderLeftColor: accent }}
       >
         <p className="section-label mb-2">Conceito</p>
         <p className="text-lg font-semibold text-[var(--text-primary)]">{logo.concept}</p>
@@ -142,7 +142,7 @@ export default function LogoGuidelines() {
               <div className="flex flex-col items-center gap-3 text-center">
                 <p
                   className="text-5xl font-bold"
-                  style={{ color: brand.theme.primary, fontFamily: `'${headingFont}', system-ui` }}
+                  style={{ color: accent, fontFamily: `'${headingFont}', system-ui` }}
                 >
                   {brand.name}
                 </p>
@@ -178,7 +178,7 @@ export default function LogoGuidelines() {
               <div className="flex flex-col items-center gap-3 text-center">
                 <p
                   className="text-5xl font-bold"
-                  style={{ color: brand.theme.primary, fontFamily: `'${headingFont}', system-ui` }}
+                  style={{ color: accent, fontFamily: `'${headingFont}', system-ui` }}
                 >
                   {brand.name}
                 </p>

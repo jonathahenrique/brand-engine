@@ -3,7 +3,7 @@
 import { useBrand } from '@/context/BrandContext'
 
 export default function VoiceTone() {
-  const { brand } = useBrand()
+  const { brand, accent } = useBrand()
   const { voice } = brand
 
   return (
@@ -66,7 +66,7 @@ export default function VoiceTone() {
               <div className="flex items-start gap-3">
                 <span
                   className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold text-white"
-                  style={{ backgroundColor: brand.theme.primary }}
+                  style={{ backgroundColor: accent }}
                 >
                   {i + 1}
                 </span>
