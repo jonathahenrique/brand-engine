@@ -18,21 +18,18 @@ export function BrandLogo({ slug, name, logoFile, iconFile, transparent, variant
   if (variant === 'badge') {
     const badgeSrc = iconFile || logoFile
     return (
-      <div
-        className={`flex items-center justify-center rounded-xl ${className || 'h-10 w-10'}`}
-        style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
-      >
+      <div className={`flex items-center justify-center rounded-xl ${className || 'h-12 w-12'}`}>
         {badgeSrc ? (
           <Image
             src={badgeSrc}
             alt={name}
             width={96}
             height={96}
-            className="h-[60%] w-[60%] object-contain"
-            style={transparent ? undefined : { filter: 'brightness(0) invert(1)' }}
+            className="h-[70%] w-[70%] object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
           />
         ) : (
-          <span className="text-sm font-bold text-white">{name.charAt(0)}</span>
+          <span className="text-base font-bold text-white">{name.charAt(0)}</span>
         )}
       </div>
     )

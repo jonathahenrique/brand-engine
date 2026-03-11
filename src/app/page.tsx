@@ -1,6 +1,6 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { getAllBrands } from '@/data/brands'
-import { BrandLogo } from '@/components/ui/BrandLogo'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export default function HomePage() {
@@ -54,21 +54,26 @@ export default function HomePage() {
               <div className="card overflow-hidden transition-all group-hover:shadow-lg group-hover:-translate-y-0.5">
                 {/* Gradient banner */}
                 <div
-                  className="relative h-28 flex items-end p-5"
+                  className="relative flex h-28 items-center justify-center p-5"
                   style={{
-                    background: `linear-gradient(135deg, ${brand.theme.primary}, ${brand.theme.secondary || brand.theme.primaryDeep})`,
+                    background: `linear-gradient(135deg, ${brand.theme.bg}, ${brand.theme.surfaceHover || brand.theme.surface})`,
                   }}
                 >
-                  <BrandLogo
-                    slug={brand.slug}
-                    name={brand.name}
-                    logoFile={brand.logo.file || brand.logo.variants.find(v => v.file)?.file}
-                    iconFile={brand.logo.icon}
-                    transparent={brand.logo.transparent}
-                    variant="badge"
-                    theme={brand.theme}
-                    className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm"
-                  />
+                  {(() => {
+                    const logoSrc = brand.logo.file || brand.logo.variants.find(v => v.file)?.file
+                    if (logoSrc) {
+                      return (
+                        <Image
+                          src={logoSrc}
+                          alt={brand.name}
+                          width={180}
+                          height={60}
+                          className="h-auto max-h-14 w-auto max-w-[220px] object-contain drop-shadow-md"
+                        />
+                      )
+                    }
+                    return <span className="text-2xl font-bold text-white">{brand.name}</span>
+                  })()}
                 </div>
 
                 {/* Content */}
@@ -100,7 +105,7 @@ export default function HomePage() {
                         className="h-full rounded-full"
                         style={{
                           width: `${brand.completeness}%`,
-                          backgroundColor: brand.theme.primary,
+                          backgroundColor: brand.theme.accent || brand.theme.primary,
                         }}
                       />
                     </div>
